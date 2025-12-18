@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 import { useOrders, useUpdateOrderStatus } from '@/hooks/useOrders';
-import { useProducts, useDeleteProduct, useCreateProduct } from '@/hooks/useProducts';
+import { useProducts, useDeleteProduct, useCreateProduct, useUpdateProduct } from '@/hooks/useProducts';
 import { useImageUpload } from '@/hooks/useImageUpload';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -32,12 +32,26 @@ const Admin = () => {
   const updateOrderStatus = useUpdateOrderStatus();
   const deleteProduct = useDeleteProduct();
   const createProduct = useCreateProduct();
+  const updateProduct = useUpdateProduct();
   const { uploadProductImages, isUploading: isUploadingImages } = useImageUpload();
   
   const [selectedImageFiles, setSelectedImageFiles] = useState<File[]>([]);
   
   const [showAddProduct, setShowAddProduct] = useState(false);
+  const [showEditProduct, setShowEditProduct] = useState(false);
+  const [editingProductId, setEditingProductId] = useState<string | null>(null);
+  
   const [newProduct, setNewProduct] = useState({
+    name: '',
+    description: '',
+    price: '',
+    discounted_price: '',
+    discount_expiry: '',
+    category: '',
+    stock_quantity: '',
+  });
+  
+  const [editProduct, setEditProduct] = useState({
     name: '',
     description: '',
     price: '',
@@ -107,6 +121,63 @@ const Admin = () => {
       setSelectedImageFiles([]);
     } catch (error) {
       console.error('Error creating product:', error);
+    }
+  };
+
+  const handleOpenEditProduct = (product: Product) => {
+    setEditingProductId(product.id);
+    setEditProduct({
+      name: product.name,
+      description: product.description || '',
+      price: product.price.toString(),
+      discounted_price: product.discounted_price?.toString() || '',
+      discount_expiry: product.discount_expiry || '',
+      category: product.category,
+      stock_quantity: product.stock_quantity.toString(),
+    });
+    setShowEditProduct(true);
+  };
+
+  const handleEditProduct = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!editingProductId) return;
+
+    // Validate required fields
+    if (!editProduct.name || !editProduct.category || !editProduct.price || editProduct.stock_quantity === '') {
+      console.error('Missing required fields');
+      return;
+    }
+
+    // Convert string values to appropriate types
+    const productData = {
+      id: editingProductId,
+      name: editProduct.name,
+      description: editProduct.description || null,
+      price: parseFloat(editProduct.price),
+      discounted_price: editProduct.discounted_price ? parseFloat(editProduct.discounted_price) : null,
+      discount_expiry: editProduct.discount_expiry || null,
+      category: editProduct.category,
+      stock_quantity: parseInt(editProduct.stock_quantity),
+      in_stock: parseInt(editProduct.stock_quantity) > 0,
+    };
+
+    try {
+      await updateProduct.mutateAsync(productData);
+      // Reset form on success
+      setShowEditProduct(false);
+      setEditingProductId(null);
+      setEditProduct({
+        name: '',
+        description: '',
+        price: '',
+        discounted_price: '',
+        discount_expiry: '',
+        category: '',
+        stock_quantity: '',
+      });
+    } catch (error) {
+      console.error('Error updating product:', error);
     }
   };
 
@@ -379,6 +450,124 @@ const Admin = () => {
                 </motion.div>
               )}
 
+              {/* Edit Product Form */}
+              {showEditProduct && (
+                <motion.div 
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="card-elevated p-6"
+                >
+                  <h3 className="text-lg font-semibold mb-4">Edit Product</h3>
+                  <form onSubmit={handleEditProduct} className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <Label htmlFor="edit-name">Product Name</Label>
+                        <Input
+                          id="edit-name"
+                          value={editProduct.name}
+                          onChange={(e) => setEditProduct({ ...editProduct, name: e.target.value })}
+                          placeholder="Enter product name"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="edit-category">Category</Label>
+                        <Input
+                          id="edit-category"
+                          value={editProduct.category}
+                          onChange={(e) => setEditProduct({ ...editProduct, category: e.target.value })}
+                          placeholder="e.g., Electronics, Clothing"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="edit-description">Description</Label>
+                      <textarea
+                        id="edit-description"
+                        value={editProduct.description}
+                        onChange={(e) => setEditProduct({ ...editProduct, description: e.target.value })}
+                        placeholder="Product description"
+                        className="w-full px-3 py-2 border rounded-md text-sm"
+                        rows={3}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                      <div>
+                        <Label htmlFor="edit-price">Price (RWF)</Label>
+                        <Input
+                          id="edit-price"
+                          type="number"
+                          value={editProduct.price}
+                          onChange={(e) => setEditProduct({ ...editProduct, price: e.target.value })}
+                          placeholder="0"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="edit-discounted_price">Discounted Price (RWF)</Label>
+                        <Input
+                          id="edit-discounted_price"
+                          type="number"
+                          value={editProduct.discounted_price}
+                          onChange={(e) => setEditProduct({ ...editProduct, discounted_price: e.target.value })}
+                          placeholder="Optional"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="edit-discount_expiry">Discount Expiry</Label>
+                        <Input
+                          id="edit-discount_expiry"
+                          type="date"
+                          value={editProduct.discount_expiry}
+                          onChange={(e) => setEditProduct({ ...editProduct, discount_expiry: e.target.value })}
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="edit-stock_quantity">Stock Quantity</Label>
+                      <Input
+                        id="edit-stock_quantity"
+                        type="number"
+                        value={editProduct.stock_quantity}
+                        onChange={(e) => setEditProduct({ ...editProduct, stock_quantity: e.target.value })}
+                        placeholder="Number of items in stock"
+                        required
+                      />
+                    </div>
+
+                    <div className="flex gap-2 justify-end">
+                      <Button 
+                        type="button"
+                        variant="outline"
+                        onClick={() => {
+                          setShowEditProduct(false);
+                          setEditingProductId(null);
+                        }}
+                        disabled={updateProduct.isPending}
+                      >
+                        Cancel
+                      </Button>
+                      <Button 
+                        type="submit"
+                        disabled={updateProduct.isPending}
+                      >
+                        {updateProduct.isPending ? (
+                          <>
+                            <Loader2 className="w-4 h-4 mr-2 animate-spin" /> Updating...
+                          </>
+                        ) : (
+                          'Update Product'
+                        )}
+                      </Button>
+                    </div>
+                  </form>
+                </motion.div>
+              )}
+
               {/* Products List */}
               {productsLoading ? (
                 <div className="flex justify-center py-12"><Loader2 className="w-6 h-6 animate-spin" /></div>
@@ -451,6 +640,7 @@ const Admin = () => {
                             variant="outline" 
                             size="icon"
                             className="text-blue-600 hover:text-blue-700"
+                            onClick={() => handleOpenEditProduct(product)}
                           >
                             <Edit2 className="w-4 h-4" />
                           </Button>
