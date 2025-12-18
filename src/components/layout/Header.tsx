@@ -110,7 +110,7 @@ const Header = () => {
             ) : (
               <Link to="/auth">
                 <Button variant="outline" size="sm" className="hidden sm:flex">
-                  Admin Login
+                  Login
                 </Button>
               </Link>
             )}
@@ -165,7 +165,7 @@ const Header = () => {
                   className="text-foreground/80 hover:text-primary transition-colors font-medium"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Admin Login
+                  Login
                 </Link>
               )}
             </div>
