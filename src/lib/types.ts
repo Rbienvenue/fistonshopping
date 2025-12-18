@@ -3,7 +3,10 @@ export interface Product {
   name: string;
   description: string | null;
   price: number;
+  discounted_price: number | null;
+  discount_expiry: string | null;
   category: string;
+  stock_quantity: number;
   images: string[];
   in_stock: boolean;
   created_at: string;
@@ -50,6 +53,7 @@ export interface AdminSettings {
 export interface Profile {
   id: string;
   email: string | null;
+  full_name: string | null;
   is_admin: boolean;
   created_at: string;
   updated_at: string;

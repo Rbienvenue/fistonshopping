@@ -61,11 +61,9 @@ const CheckoutForm = () => {
 
     if (uploadError) throw uploadError;
 
-    const { data: { publicUrl } } = supabase.storage
-      .from('payment-proofs')
-      .getPublicUrl(fileName);
-
-    return publicUrl;
+    // For private buckets, store the file path (not URL)
+    // Signed URLs will be generated dynamically when admin views the proof
+    return fileName;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

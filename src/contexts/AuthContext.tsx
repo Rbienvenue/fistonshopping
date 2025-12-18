@@ -10,7 +10,7 @@ interface AuthContextType {
   isAdmin: boolean;
   isLoading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
-  signUp: (email: string, password: string) => Promise<{ error: Error | null }>;
+  signUp: (email: string, password: string, fullName: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
 }
 
@@ -71,14 +71,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return { error: error as Error | null };
   };
 
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (email: string, password: string, fullName: string) => {
     const redirectUrl = `${window.location.origin}/`;
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: { emailRedirectTo: redirectUrl },
     });
-    return { error: error as Error | null };
+
+    if (error) {
+      return { error: error as Error };
+    }
+
+    // Store full_name in sessionStorage to update profile after email verification
+    if (data.user) {
+      sessionStorage.setItem('pendingFullName', fullName);
+    }
+
+    return { error: null };
   };
 
   const signOut = async () => {
