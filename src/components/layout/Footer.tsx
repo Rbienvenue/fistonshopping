@@ -107,7 +107,7 @@ const Footer = () => {
             © {new Date().getFullYear()} Fiston Shop Kigali. All rights reserved.
           </p>
           <p>
-            Developed by{' '}
+            Developed by 
             <a
               href="wa.me/250791811736"
               target="_blank"
