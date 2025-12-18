@@ -339,7 +339,7 @@ const Admin = () => {
                         value={newProduct.description}
                         onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
                         placeholder="Product description"
-                        className="w-full px-3 py-2 border rounded-md text-sm"
+                        className="w-full px-3 py-2 border rounded-md text-sm bg-background border-input text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 resize-none"
                         rows={3}
                       />
                     </div>
@@ -489,7 +489,7 @@ const Admin = () => {
                         value={editProduct.description}
                         onChange={(e) => setEditProduct({ ...editProduct, description: e.target.value })}
                         placeholder="Product description"
-                        className="w-full px-3 py-2 border rounded-md text-sm"
+                        className="w-full px-3 py-2 border rounded-md text-sm bg-background border-input text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 resize-none"
                         rows={3}
                       />
                     </div>
