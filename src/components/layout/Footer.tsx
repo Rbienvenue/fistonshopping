@@ -109,7 +109,7 @@ const Footer = () => {
           <p>
             Developed by 
             <a
-              href="wa.me/250791811736"
+              href="https://wa.me/250791811736"
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:underline"
