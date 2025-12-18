@@ -106,6 +106,17 @@ const Footer = () => {
           <p className="text-sm text-secondary-foreground/60">
             © {new Date().getFullYear()} Fiston Shop Kigali. All rights reserved.
           </p>
+          <p>
+            Developed by{' '}
+            <a
+              href="wa.me/250791811736"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary hover:underline"
+            >
+              Gervais Iradukunda
+            </a>
+          </p>
         </div>
       </div>
     </footer>
