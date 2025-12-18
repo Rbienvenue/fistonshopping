@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Mail, Lock, Loader2, Zap, User, Eye, EyeOff } from 'lucide-react';
+import { Mail, Lock, Loader2, Zap, User, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -65,6 +65,13 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
+      <button
+        onClick={() => navigate(-1)}
+        className="absolute top-4 left-4 p-2 rounded-lg hover:bg-muted transition-colors"
+        aria-label="Go back"
+      >
+        <ArrowLeft className="w-5 h-5 text-muted-foreground hover:text-foreground" />
+      </button>
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-4">
