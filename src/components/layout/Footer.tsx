@@ -69,7 +69,7 @@ const Footer = () => {
               )}
               <div className="flex items-center gap-3 text-sm text-secondary-foreground/80">
                 <Mail className="w-4 h-4 text-primary" />
-                <span>info@fistonshop.rw</span>
+                <span>nyaminaniildephonse44@gmail.com</span>
               </div>
             </div>
           </motion.div>
@@ -97,7 +97,7 @@ const Footer = () => {
               ))}
             </div>
             <p className="mt-4 text-sm text-secondary-foreground/60">
-              Open: Mon - Sat, 8AM - 8PM
+              Open: Monday - Sunday, 8AM - 8PM
             </p>
           </motion.div>
         </div>
