@@ -305,7 +305,7 @@ See [QUICK_REFERENCE.md - Deployment Checklist](QUICK_REFERENCE.md#-deployment-c
    - Execute in Supabase Dashboard → SQL Editor
 
 3. **Test Features**
-   - Admin login
+   - Login
    - Image upload
    - Product creation
    - Order management
