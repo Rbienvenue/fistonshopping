@@ -107,14 +107,14 @@ const Footer = () => {
             © {new Date().getFullYear()} Fiston Shop Kigali. All rights reserved.
           </p>
           <p>
-            Developed by 
+            Developed by
             <a
               href="https://wa.me/250791811736"
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary hover:underline"
             >
-              Gervais Iradukunda
+             {" "} Gervais Iradukunda
             </a>
           </p>
         </div>
