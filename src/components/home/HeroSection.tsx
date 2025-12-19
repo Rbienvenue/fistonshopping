@@ -51,7 +51,7 @@ const HeroSection = () => {
               className="text-lg text-secondary-foreground/80 mb-8 max-w-lg mx-auto lg:mx-0"
             >
               Discover premium home electronics delivered right to your doorstep in Kigali. 
-              Quality products, trusted service, seamless shopping experience.
+              Quality products, trusted service, seamless shopping experience at Fiston Shopping.
             </motion.p>
 
             <motion.div
