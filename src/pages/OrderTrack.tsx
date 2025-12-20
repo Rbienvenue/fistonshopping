@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useGetOrderById } from '@/hooks/useOrders';
+import { useAdminSettings } from '@/hooks/useAdminSettings';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader2, Package, CheckCircle, XCircle, Clock, ArrowLeft } from 'lucide-react';
+import { Loader2, Package, CheckCircle, XCircle, Clock, ArrowLeft, Phone, MessageCircle, Instagram, Mail } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,6 +16,7 @@ const OrderTrack = () => {
   const [searchOrderId, setSearchOrderId] = useState('');
   const [submittedOrderId, setSubmittedOrderId] = useState('');
   const { data: order, isLoading, error } = useGetOrderById(submittedOrderId);
+  const { data: settings } = useAdminSettings();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -271,6 +273,87 @@ const OrderTrack = () => {
               </CardContent>
             </Card>
           )}
+
+          {/* Contact Us Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <Card className="card-elevated border-l-4 border-l-accent">
+              <CardHeader>
+                <CardTitle>Need Help? Contact Us</CardTitle>
+                <CardDescription>
+                  Get in touch with our team if you have any questions about your order
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {settings?.phone_number && (
+                    <a
+                      href={`tel:${settings.phone_number}`}
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors group"
+                    >
+                      <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center group-hover:bg-blue-200 transition-colors">
+                        <Phone className="w-5 h-5 text-blue-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium">Call Us</p>
+                        <p className="text-sm text-muted-foreground">{settings.phone_number}</p>
+                      </div>
+                    </a>
+                  )}
+
+                  {settings?.whatsapp_number && (
+                    <a
+                      href={`https://wa.me/${settings.whatsapp_number.replace(/\D/g, '')}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors group"
+                    >
+                      <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center group-hover:bg-green-200 transition-colors">
+                        <MessageCircle className="w-5 h-5 text-green-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium">WhatsApp</p>
+                        <p className="text-sm text-muted-foreground">Message us on WhatsApp</p>
+                      </div>
+                    </a>
+                  )}
+
+                  {settings?.instagram_url && (
+                    <a
+                      href={settings.instagram_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors group"
+                    >
+                      <div className="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center group-hover:bg-pink-200 transition-colors">
+                        <Instagram className="w-5 h-5 text-pink-600" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium">Instagram</p>
+                        <p className="text-sm text-muted-foreground">Follow us for updates</p>
+                      </div>
+                    </a>
+                  )}
+
+                  <a
+                    href="mailto:nyaminaniildephonse44@gmail.com"
+                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/50 transition-colors group"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center group-hover:bg-amber-200 transition-colors">
+                      <Mail className="w-5 h-5 text-amber-600" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium">Email Us</p>
+                      <p className="text-sm text-muted-foreground">nyaminaniildephonse44@gmail.com</p>
+                    </div>
+                  </a>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
         </motion.div>
       </div>
     </Layout>
