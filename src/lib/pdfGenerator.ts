@@ -235,7 +235,7 @@ export const generateOrderReceiptPDF = (order: OrderData) => {
     pdf.setFontSize(9);
     pdf.setFont(undefined, 'normal');
     pdf.setTextColor(32, 62, 120);
-    const messageLines = pdf.splitTextToSize('Your order has been received. We will call you within 24 hours at most to confirm delivery details.', contentWidth - 6);
+    const messageLines = pdf.splitTextToSize('Your order has been received. We will call you within 24 hours atmost to confirm delivery details.', contentWidth - 6);
     messageLines.forEach((line: string, index: number) => {
       pdf.text(line, margin + 3, yPosition + 6 + (index * 4));
     });
