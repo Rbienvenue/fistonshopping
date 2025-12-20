@@ -9,7 +9,7 @@ import { Layout } from '@/components/layout/Layout';
 import { Send, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-export const Chat = () => {
+const ChatContent = () => {
   const { user, profile, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [messageInput, setMessageInput] = useState('');
@@ -28,7 +28,11 @@ export const Chat = () => {
   // Scroll to bottom when new messages arrive
   useEffect(() => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      try {
+        messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+      } catch (e) {
+        console.error('Scroll error:', e);
+      }
     }
   }, [messages]);
 
@@ -39,13 +43,13 @@ export const Chat = () => {
 
     setIsSending(true);
 
-    const { error: sendError } = await sendMessage(
+    const result = await sendMessage(
       messageInput,
       profile.full_name || 'Anonymous',
       'user'
     );
 
-    if (!sendError) {
+    if (!result?.error) {
       setMessageInput('');
     }
 
@@ -98,50 +102,55 @@ export const Chat = () => {
               </div>
             ) : (
               messages.map((msg) => {
-                const isUserMessage = msg.sender_role === 'user';
-                return (
-                  <div
-                    key={msg.id}
-                    className={`flex gap-3 ${
-                      isUserMessage ? 'flex-row-reverse' : 'flex-row'
-                    }`}
-                  >
-                    {/* Avatar */}
-                    <Avatar className="h-10 w-10 flex-shrink-0 mt-1">
-                      <AvatarFallback
-                        className={
-                          isUserMessage
-                            ? 'bg-blue-500 text-white'
-                            : 'bg-green-500 text-white'
-                        }
-                      >
-                        {msg.sender_name.charAt(0).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
+                try {
+                  const isUserMessage = msg.sender_role === 'user';
+                  return (
+                    <div
+                      key={msg.id}
+                      className={`flex gap-3 ${
+                        isUserMessage ? 'flex-row-reverse' : 'flex-row'
+                      }`}
+                    >
+                      {/* Avatar */}
+                      <Avatar className="h-10 w-10 flex-shrink-0 mt-1">
+                        <AvatarFallback
+                          className={
+                            isUserMessage
+                              ? 'bg-blue-500 text-white'
+                              : 'bg-green-500 text-white'
+                          }
+                        >
+                          {msg.sender_name?.charAt(0).toUpperCase() || 'U'}
+                        </AvatarFallback>
+                      </Avatar>
 
-                    {/* Message Bubble */}
-                    <div className={`flex flex-col ${isUserMessage ? 'items-end' : 'items-start'}`}>
-                      <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                        {msg.sender_name}
-                      </p>
-                      <div
-                        className={`px-4 py-2 rounded-lg max-w-xs ${
-                          isUserMessage
-                            ? 'bg-blue-500 text-white rounded-br-none'
-                            : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-bl-none'
-                        }`}
-                      >
-                        <p className="text-sm break-words">{msg.message}</p>
+                      {/* Message Bubble */}
+                      <div className={`flex flex-col ${isUserMessage ? 'items-end' : 'items-start'}`}>
+                        <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                          {msg.sender_name || 'Unknown'}
+                        </p>
+                        <div
+                          className={`px-4 py-2 rounded-lg max-w-xs ${
+                            isUserMessage
+                              ? 'bg-blue-500 text-white rounded-br-none'
+                              : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-bl-none'
+                          }`}
+                        >
+                          <p className="text-sm break-words">{msg.message}</p>
+                        </div>
+                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 px-2">
+                          {new Date(msg.created_at).toLocaleTimeString([], {
+                            hour: '2-digit',
+                            minute: '2-digit',
+                          })}
+                        </p>
                       </div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 px-2">
-                        {new Date(msg.created_at).toLocaleTimeString([], {
-                          hour: '2-digit',
-                          minute: '2-digit',
-                        })}
-                      </p>
                     </div>
-                  </div>
-                );
+                  );
+                } catch (msgError) {
+                  console.error('Error rendering message:', msgError, msg);
+                  return null;
+                }
               })
             )}
             <div ref={messagesEndRef} />
@@ -178,6 +187,24 @@ export const Chat = () => {
       </div>
     </Layout>
   );
+};
+
+export const Chat = () => {
+  try {
+    return <ChatContent />;
+  } catch (error) {
+    console.error('Chat component error:', error);
+    return (
+      <Layout>
+        <div className="max-w-4xl mx-auto py-6 px-4">
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+            <p className="font-bold">Error loading chat</p>
+            <p className="text-sm">Please refresh the page and try again.</p>
+          </div>
+        </div>
+      </Layout>
+    );
+  }
 };
 
 export default Chat;

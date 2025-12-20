@@ -6,10 +6,14 @@ export const useChat = (userId: string | undefined) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [tableExists, setTableExists] = useState(true);
 
   // Fetch chat messages
   const fetchMessages = useCallback(async () => {
-    if (!userId) return;
+    if (!userId) {
+      setIsLoading(false);
+      return;
+    }
 
     setIsLoading(true);
     setError(null);
@@ -23,14 +27,21 @@ export const useChat = (userId: string | undefined) => {
 
       if (fetchError) {
         console.error('Fetch error:', fetchError);
-        // If table doesn't exist, don't show error to user
-        if (fetchError.message?.includes('relation') || fetchError.message?.includes('does not exist')) {
+        // Check if table doesn't exist
+        if (
+          fetchError.message?.toLowerCase().includes('relation') ||
+          fetchError.message?.toLowerCase().includes('does not exist') ||
+          fetchError.message?.toLowerCase().includes('undefined table')
+        ) {
+          setTableExists(false);
           setMessages([]);
+          setError('Chat table is being initialized. Please refresh the page.');
         } else {
-          setError(fetchError.message);
+          setError(fetchError.message || 'Failed to fetch messages');
         }
         return;
       }
+      setTableExists(true);
       setMessages(data || []);
     } catch (err) {
       console.error('Error fetching messages:', err);
@@ -44,8 +55,15 @@ export const useChat = (userId: string | undefined) => {
   const sendMessage = useCallback(
     async (message: string, senderName: string, senderRole: 'user' | 'admin') => {
       if (!userId) {
-        setError('User not authenticated');
-        return { error: 'User not authenticated' };
+        const errorMsg = 'User not authenticated';
+        setError(errorMsg);
+        return { error: errorMsg };
+      }
+
+      if (!tableExists) {
+        const errorMsg = 'Chat is not available yet. Please try again after refreshing.';
+        setError(errorMsg);
+        return { error: errorMsg };
       }
 
       try {
@@ -63,6 +81,15 @@ export const useChat = (userId: string | undefined) => {
 
         if (insertError) {
           console.error('Insert error:', insertError);
+          if (
+            insertError.message?.toLowerCase().includes('relation') ||
+            insertError.message?.toLowerCase().includes('does not exist')
+          ) {
+            setTableExists(false);
+            const errorMsg = 'Chat table is being initialized. Please refresh the page.';
+            setError(errorMsg);
+            return { error: errorMsg };
+          }
           const errorMsg = insertError.message || 'Failed to send message';
           setError(errorMsg);
           return { error: errorMsg };
@@ -80,19 +107,20 @@ export const useChat = (userId: string | undefined) => {
         return { error: errorMsg };
       }
     },
-    [userId]
+    [userId, tableExists]
   );
 
   // Subscribe to new messages
   useEffect(() => {
-    if (!userId) return;
+    if (!userId || !tableExists) return;
 
     // Initial fetch
     fetchMessages();
 
-    // Setup subscription
+    // Setup subscription with error handling
+    let subscription: any = null;
     try {
-      const subscription = supabase
+      subscription = supabase
         .channel(`chat:${userId}`)
         .on(
           'postgres_changes',
@@ -102,20 +130,25 @@ export const useChat = (userId: string | undefined) => {
             table: 'chat_messages',
             filter: `user_id=eq.${userId}`,
           },
-          (payload) => {
+          (payload: any) => {
             setMessages((prev) => [...prev, payload.new as ChatMessage]);
           }
         )
-        .subscribe();
-
-      return () => {
-        subscription.unsubscribe();
-      };
+        .subscribe((status: string) => {
+          if (status === 'SUBSCRIBED') {
+            console.log('Chat subscription active');
+          }
+        });
     } catch (err) {
       console.error('Subscription error:', err);
-      return undefined;
     }
-  }, [userId]);
+
+    return () => {
+      if (subscription) {
+        subscription.unsubscribe();
+      }
+    };
+  }, [userId, tableExists, fetchMessages]);
 
   return {
     messages,
@@ -123,5 +156,6 @@ export const useChat = (userId: string | undefined) => {
     error,
     sendMessage,
     fetchMessages,
+    tableExists,
   };
 };
