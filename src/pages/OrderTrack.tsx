@@ -7,9 +7,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader2, Package, CheckCircle, XCircle, Clock, ArrowLeft, Phone, MessageCircle, Instagram, Mail } from 'lucide-react';
+import { Loader2, Package, CheckCircle, XCircle, Clock, ArrowLeft, Phone, MessageCircle, Instagram, Mail, Download } from 'lucide-react';
 import Layout from '@/components/layout/Layout';
 import { useNavigate } from 'react-router-dom';
+import { generateOrderReceiptPDF } from '@/lib/pdfGenerator';
 
 const OrderTrack = () => {
   const navigate = useNavigate();
@@ -155,14 +156,24 @@ const OrderTrack = () => {
                   </div>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <div>
-                    <span
-                      className={`inline-block px-4 py-2 rounded-full text-sm font-semibold border ${getStatusColor(order.status)}`}
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                      <span
+                        className={`inline-block px-4 py-2 rounded-full text-sm font-semibold border ${getStatusColor(order.status)}`}
+                      >
+                        {order.status === 'pending' && 'Pending Review'}
+                        {order.status === 'approved' && 'Approved'}
+                        {order.status === 'rejected' && 'Rejected'}
+                      </span>
+                    </div>
+                    <Button
+                      onClick={() => generateOrderReceiptPDF(order)}
+                      className="gap-2 flex items-center"
+                      variant="outline"
                     >
-                      {order.status === 'pending' && 'Pending Review'}
-                      {order.status === 'approved' && 'Approved'}
-                      {order.status === 'rejected' && 'Rejected'}
-                    </span>
+                      <Download className="w-4 h-4" />
+                      Download Receipt
+                    </Button>
                   </div>
 
                   {order.admin_comment && (
