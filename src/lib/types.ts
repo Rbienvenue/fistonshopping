@@ -64,3 +64,12 @@ export interface CartItem {
   product: Product;
   quantity: number;
 }
+export interface ChatMessage {
+  id: string;
+  user_id: string;
+  sender_name: string;
+  sender_role: 'user' | 'admin';
+  message: string;
+  created_at: string;
+  updated_at: string;
+}

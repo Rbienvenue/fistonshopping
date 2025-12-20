@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ShoppingCart, Sun, Moon, Menu, X, Zap, User } from 'lucide-react';
+import { ShoppingCart, Sun, Moon, Menu, X, Zap, User, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/contexts/CartContext';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -60,6 +60,15 @@ const Header = () => {
             >
               Track Order
             </Link>
+            {user && (
+              <Link
+                to="/chat"
+                className="text-foreground/80 hover:text-primary transition-colors font-medium flex items-center gap-2"
+              >
+                <MessageCircle className="w-4 h-4" />
+                Chat
+              </Link>
+            )}
             {isAdmin && (
               <Link
                 to="/admin"
@@ -163,6 +172,16 @@ const Header = () => {
               >
                 Track Order
               </Link>
+              {user && (
+                <Link
+                  to="/chat"
+                  className="text-foreground/80 hover:text-primary transition-colors font-medium flex items-center gap-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  Chat
+                </Link>
+              )}
               {isAdmin && (
                 <Link
                   to="/admin"

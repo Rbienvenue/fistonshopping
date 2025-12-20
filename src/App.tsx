@@ -12,6 +12,7 @@ import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
+import Chat from "./pages/Chat";
 import OrderSuccess from "./pages/OrderSuccess";
 import OrderTrack from "./pages/OrderTrack";
 import Profile from "./pages/Profile";
@@ -35,6 +36,7 @@ const App = () => (
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/admin" element={<Admin />} />
+                <Route path="/chat" element={<Chat />} />
                 <Route path="/order-success" element={<OrderSuccess />} />
                 <Route path="/order-track" element={<OrderTrack />} />
                 <Route path="/profile" element={<Profile />} />
