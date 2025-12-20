@@ -88,10 +88,15 @@ export const useUpdateOrderStatus = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ id, status }: { id: string; status: Order['status'] }) => {
+    mutationFn: async ({ id, status, adminComment }: { id: string; status: Order['status']; adminComment?: string }) => {
+      const updateData: any = { status };
+      if (adminComment !== undefined) {
+        updateData.admin_comment = adminComment;
+      }
+      
       const { data, error } = await supabase
         .from('orders')
-        .update({ status })
+        .update(updateData)
         .eq('id', id)
         .select()
         .single();
@@ -105,5 +110,27 @@ export const useUpdateOrderStatus = () => {
     onError: (error: Error) => {
       toast.error(error.message);
     },
+  });
+};
+
+export const useGetOrderById = (orderId: string) => {
+  return useQuery({
+    queryKey: ['order', orderId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('orders')
+        .select(`
+          *,
+          order_items (
+            *,
+            product:products (*)
+          )
+        `)
+        .eq('id', orderId)
+        .single();
+      if (error) throw error;
+      return data as OrderWithItems;
+    },
+    enabled: !!orderId,
   });
 };

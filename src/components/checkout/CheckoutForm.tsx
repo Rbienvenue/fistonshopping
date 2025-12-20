@@ -92,7 +92,7 @@ const CheckoutForm = () => {
     try {
       const paymentProofUrl = await uploadPaymentProof();
 
-      await createOrder.mutateAsync({
+      const order = await createOrder.mutateAsync({
         customerName: formData.customerName,
         phoneNumber: formData.phoneNumber,
         deliveryAddress: formData.deliveryAddress,
@@ -102,7 +102,7 @@ const CheckoutForm = () => {
       });
 
       clearCart();
-      navigate('/order-success');
+      navigate('/order-success', { state: { orderId: order.id } });
     } catch (error) {
       console.error('Checkout error:', error);
       toast.error('Failed to place order. Please try again.');

@@ -9,6 +9,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
 import { 
   LogOut, Package, ShoppingBag, Loader2, Trash2, CheckCircle, XCircle, Clock, 
   Plus, Edit2, Eye, EyeOff, Calendar 
@@ -40,6 +49,10 @@ const Admin = () => {
   const [showAddProduct, setShowAddProduct] = useState(false);
   const [showEditProduct, setShowEditProduct] = useState(false);
   const [editingProductId, setEditingProductId] = useState<string | null>(null);
+  const [showOrderCommentDialog, setShowOrderCommentDialog] = useState(false);
+  const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+  const [orderComment, setOrderComment] = useState('');
+  const [orderCommentStatus, setOrderCommentStatus] = useState<'pending' | 'approved' | 'rejected'>('pending');
   
   const [newProduct, setNewProduct] = useState({
     name: '',
@@ -264,12 +277,17 @@ const Admin = () => {
                           </TableCell>
                           <TableCell>
                             {order.status === 'pending' && (
-                              <div className="flex gap-1">
+                              <div className="flex gap-1 flex-wrap">
                                 <Button 
                                   size="sm" 
                                   variant="outline"
                                   className="text-xs h-8"
-                                  onClick={() => updateOrderStatus.mutate({ id: order.id, status: 'approved' })} 
+                                  onClick={() => {
+                                    setSelectedOrderId(order.id);
+                                    setOrderCommentStatus('approved');
+                                    setOrderComment(order.admin_comment || '');
+                                    setShowOrderCommentDialog(true);
+                                  }} 
                                   disabled={!order.payment_proof_url}
                                 >
                                   <CheckCircle className="w-3 h-3 mr-1" /> Approve
@@ -278,7 +296,12 @@ const Admin = () => {
                                   size="sm" 
                                   variant="destructive"
                                   className="text-xs h-8"
-                                  onClick={() => updateOrderStatus.mutate({ id: order.id, status: 'rejected' })}
+                                  onClick={() => {
+                                    setSelectedOrderId(order.id);
+                                    setOrderCommentStatus('rejected');
+                                    setOrderComment(order.admin_comment || '');
+                                    setShowOrderCommentDialog(true);
+                                  }}
                                 >
                                   <XCircle className="w-3 h-3 mr-1" /> Reject
                                 </Button>
@@ -667,6 +690,100 @@ const Admin = () => {
             </div>
           </TabsContent>
         </Tabs>
+
+        {/* Order Status & Comment Dialog */}
+        <Dialog open={showOrderCommentDialog} onOpenChange={setShowOrderCommentDialog}>
+          <DialogContent className="sm:max-w-[500px]">
+            <DialogHeader>
+              <DialogTitle>Update Order Status</DialogTitle>
+              <DialogDescription>
+                Set the order status and optionally add a comment for the customer
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="status">Status</Label>
+                <div className="mt-2 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      id="approved"
+                      name="status"
+                      value="approved"
+                      checked={orderCommentStatus === 'approved'}
+                      onChange={(e) => setOrderCommentStatus(e.target.value as 'approved' | 'rejected')}
+                      className="w-4 h-4"
+                    />
+                    <label htmlFor="approved" className="flex items-center gap-2 cursor-pointer">
+                      <CheckCircle className="w-4 h-4 text-green-600" />
+                      <span>Approve Order</span>
+                    </label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      id="rejected"
+                      name="status"
+                      value="rejected"
+                      checked={orderCommentStatus === 'rejected'}
+                      onChange={(e) => setOrderCommentStatus(e.target.value as 'approved' | 'rejected')}
+                      className="w-4 h-4"
+                    />
+                    <label htmlFor="rejected" className="flex items-center gap-2 cursor-pointer">
+                      <XCircle className="w-4 h-4 text-red-600" />
+                      <span>Reject Order</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <Label htmlFor="comment">Comment (Optional)</Label>
+                <Textarea
+                  id="comment"
+                  placeholder="Add a message for the customer (e.g., reason for rejection, payment confirmation, delivery details, etc.)"
+                  value={orderComment}
+                  onChange={(e) => setOrderComment(e.target.value)}
+                  className="mt-2 min-h-[100px]"
+                />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button variant="outline" onClick={() => setShowOrderCommentDialog(false)}>
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  if (selectedOrderId) {
+                    updateOrderStatus.mutate(
+                      {
+                        id: selectedOrderId,
+                        status: orderCommentStatus,
+                        adminComment: orderComment,
+                      },
+                      {
+                        onSuccess: () => {
+                          setShowOrderCommentDialog(false);
+                          setOrderComment('');
+                          setSelectedOrderId(null);
+                        },
+                      }
+                    );
+                  }
+                }}
+                disabled={updateOrderStatus.isPending}
+              >
+                {updateOrderStatus.isPending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Updating...
+                  </>
+                ) : (
+                  'Update Status'
+                )}
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
       </div>
     </Layout>
   );

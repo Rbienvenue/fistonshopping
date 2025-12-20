@@ -20,6 +20,7 @@ export interface Order {
   delivery_address: string;
   payment_proof_url: string | null;
   status: 'pending' | 'approved' | 'rejected';
+  admin_comment: string | null;
   total_amount: number;
   created_at: string;
   updated_at: string;

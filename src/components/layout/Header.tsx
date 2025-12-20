@@ -54,6 +54,12 @@ const Header = () => {
             >
               Products
             </Link>
+            <Link
+              to="/order-track"
+              className="text-foreground/80 hover:text-primary transition-colors font-medium"
+            >
+              Track Order
+            </Link>
             {isAdmin && (
               <Link
                 to="/admin"
@@ -102,7 +108,7 @@ const Header = () => {
             </Link>
 
             {user ? (
-              <Link to="/admin">
+              <Link to={isAdmin ? "/admin" : "/profile"}>
                 <Button variant="ghost" size="icon" className="rounded-full">
                   <User className="h-5 w-5" />
                 </Button>
@@ -149,6 +155,13 @@ const Header = () => {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Products
+              </Link>
+              <Link
+                to="/order-track"
+                className="text-foreground/80 hover:text-primary transition-colors font-medium"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Track Order
               </Link>
               {isAdmin && (
                 <Link
