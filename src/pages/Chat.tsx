@@ -4,7 +4,6 @@ import { useChat } from '@/hooks/useChat';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Layout } from '@/components/layout/Layout';
 import { Send, AlertCircle } from 'lucide-react';
@@ -15,7 +14,6 @@ export const Chat = () => {
   const navigate = useNavigate();
   const [messageInput, setMessageInput] = useState('');
   const [isSending, setIsSending] = useState(false);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const { messages, isLoading, error, sendMessage } = useChat(user?.id);
@@ -29,7 +27,9 @@ export const Chat = () => {
 
   // Scroll to bottom when new messages arrive
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
   }, [messages]);
 
   const handleSendMessage = async (e: React.FormEvent) => {
@@ -82,76 +82,70 @@ export const Chat = () => {
         {/* Chat Container */}
         <Card className="flex flex-col h-[600px] shadow-lg">
           {/* Messages Area */}
-          <ScrollArea className="flex-1 p-6">
-            <div className="space-y-4">
-              {isLoading && messages.length === 0 ? (
-                <div className="flex items-center justify-center h-64">
-                  <p className="text-gray-500">Loading messages...</p>
+          <div className="flex-1 overflow-y-auto p-6 space-y-4">
+            {isLoading && messages.length === 0 ? (
+              <div className="flex items-center justify-center h-64">
+                <p className="text-gray-500">Loading messages...</p>
+              </div>
+            ) : messages.length === 0 ? (
+              <div className="flex items-center justify-center h-64">
+                <div className="text-center">
+                  <p className="text-gray-500 mb-2">No messages yet</p>
+                  <p className="text-sm text-gray-400">
+                    Start a conversation by sending a message
+                  </p>
                 </div>
-              ) : messages.length === 0 ? (
-                <div className="flex items-center justify-center h-64">
-                  <div className="text-center">
-                    <p className="text-gray-500 mb-2">No messages yet</p>
-                    <p className="text-sm text-gray-400">
-                      Start a conversation by sending a message
-                    </p>
-                  </div>
-                </div>
-              ) : (
-                messages.map((msg) => {
-                  const isUserMessage = msg.sender_role === 'user';
-                  return (
-                    <div
-                      key={msg.id}
-                      className={`flex gap-3 ${
-                        isUserMessage ? 'flex-row-reverse' : 'flex-row'
-                      }`}
-                    >
-                      {/* Avatar */}
-                      <Avatar className="h-10 w-10 flex-shrink-0 mt-1">
-                        <AvatarFallback
-                          className={
-                            isUserMessage
-                              ? 'bg-blue-500 text-white'
-                              : 'bg-green-500 text-white'
-                          }
-                        >
-                          {msg.sender_name.charAt(0).toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
+              </div>
+            ) : (
+              messages.map((msg) => {
+                const isUserMessage = msg.sender_role === 'user';
+                return (
+                  <div
+                    key={msg.id}
+                    className={`flex gap-3 ${
+                      isUserMessage ? 'flex-row-reverse' : 'flex-row'
+                    }`}
+                  >
+                    {/* Avatar */}
+                    <Avatar className="h-10 w-10 flex-shrink-0 mt-1">
+                      <AvatarFallback
+                        className={
+                          isUserMessage
+                            ? 'bg-blue-500 text-white'
+                            : 'bg-green-500 text-white'
+                        }
+                      >
+                        {msg.sender_name.charAt(0).toUpperCase()}
+                      </AvatarFallback>
+                    </Avatar>
 
-                      {/* Message Bubble */}
+                    {/* Message Bubble */}
+                    <div className={`flex flex-col ${isUserMessage ? 'items-end' : 'items-start'}`}>
+                      <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        {msg.sender_name}
+                      </p>
                       <div
-                        className={`max-w-xs ${
-                          isUserMessage ? 'items-end' : 'items-start'
+                        className={`px-4 py-2 rounded-lg max-w-xs ${
+                          isUserMessage
+                            ? 'bg-blue-500 text-white rounded-br-none'
+                            : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-bl-none'
                         }`}
                       >
-                        <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                          {msg.sender_name}
-                        </p>
-                        <div
-                          className={`px-4 py-2 rounded-lg ${
-                            isUserMessage
-                              ? 'bg-blue-500 text-white rounded-br-none'
-                              : 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-white rounded-bl-none'
-                          }`}
-                        >
-                          <p className="text-sm break-words">{msg.message}</p>
-                        </div>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 px-2">
-                          {new Date(msg.created_at).toLocaleTimeString([], {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          })}
-                        </p>
+                        <p className="text-sm break-words">{msg.message}</p>
                       </div>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 px-2">
+                        {new Date(msg.created_at).toLocaleTimeString([], {
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </p>
                     </div>
-                  );
-                })
-              )}
-              <div ref={messagesEndRef} />
-            </div>
-          </ScrollArea>
+                  </div>
+                );
+              })
+            )}
+            <div ref={messagesEndRef} />
+          </div>
 
           {/* Error Alert */}
           {error && (
