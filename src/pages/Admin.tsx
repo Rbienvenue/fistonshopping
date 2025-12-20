@@ -23,7 +23,7 @@ import {
 } from '@/components/ui/table';
 import Layout from '@/components/layout/Layout';
 import ViewPaymentProofButton from '@/components/ViewPaymentProofButton';
-import { Order, Product } from '@/lib/types';
+import { Order, Product, OrderWithItems } from '@/lib/types';
 
 const Admin = () => {
   const { user, isAdmin, signOut, isLoading: authLoading } = useAuth();
@@ -231,7 +231,7 @@ const Admin = () => {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {sortedOrders.map((order: Order) => (
+                      {sortedOrders.map((order: OrderWithItems) => (
                         <TableRow key={order.id} className="hover:bg-muted/50">
                           <TableCell className="font-mono text-xs">{order.id.slice(0, 8)}</TableCell>
                           <TableCell>
@@ -241,7 +241,13 @@ const Admin = () => {
                             </div>
                           </TableCell>
                           <TableCell>
-                            <p className="text-sm text-muted-foreground truncate">{order.delivery_address}</p>
+                            <div className="text-sm">
+                              {order.order_items?.map((item) => (
+                                <p key={item.id} className="text-muted-foreground">
+                                  {item.product?.name} (x{item.quantity})
+                                </p>
+                              ))}
+                            </div>
                           </TableCell>
                           <TableCell className="font-bold text-primary">{order.total_amount.toLocaleString()} RWF</TableCell>
                           <TableCell>
