@@ -1,7 +1,16 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Instagram, Phone, MessageCircle, Zap, MapPin, Mail } from 'lucide-react';
-import { useAdminSettings } from '@/hooks/useAdminSettings';
+import React from "react";
+import { motion } from "framer-motion";
+import {
+  Instagram,
+  Phone,
+  MessageCircle,
+  Zap,
+  MapPin,
+  Mail,
+  Music,
+  Music2,
+} from "lucide-react";
+import { useAdminSettings } from "@/hooks/useAdminSettings";
 
 const Footer = () => {
   const { data: settings } = useAdminSettings();
@@ -9,19 +18,26 @@ const Footer = () => {
   const socialLinks = [
     {
       icon: Instagram,
-      href: settings?.instagram_url || '#',
-      label: 'Instagram',
+      href: settings?.instagram_url || "#",
+      label: "Instagram",
     },
     {
       icon: MessageCircle,
-      href: settings?.whatsapp_number ? `https://wa.me/${settings.whatsapp_number.replace(/\D/g, '')}` : '#',
-      label: 'WhatsApp',
+      href: settings?.whatsapp_number
+        ? `https://wa.me/${settings.whatsapp_number.replace(/\D/g, "")}`
+        : "#",
+      label: "WhatsApp",
     },
     {
       icon: Phone,
-      href: settings?.phone_number ? `tel:${settings.phone_number}` : '#',
-      label: 'Phone',
+      href: settings?.phone_number ? `tel:${settings.phone_number}` : "#",
+      label: "Phone",
     },
+    {
+      icon: Music2,
+      href: "https://www.tiktok.com/@fickykinege0?_r=1&_t=ZM-92NcM3p4WEa",
+      label: "Music",
+    }
   ];
 
   return (
@@ -40,11 +56,14 @@ const Footer = () => {
               </div>
               <div>
                 <h3 className="text-xl font-display font-bold">Fiston Shop</h3>
-                <p className="text-xs text-secondary-foreground/70">Kigali Electronics</p>
+                <p className="text-xs text-secondary-foreground/70">
+                  Kigali Electronics
+                </p>
               </div>
             </div>
             <p className="text-secondary-foreground/80 text-sm leading-relaxed">
-              {settings?.store_description || 'Your trusted source for quality home electronics in Kigali. We deliver directly to your door.'}
+              {settings?.store_description ||
+                "Your trusted source for quality home electronics in Kigali. We deliver directly to your door."}
             </p>
           </motion.div>
 
@@ -104,7 +123,8 @@ const Footer = () => {
 
         <div className="border-t border-secondary-foreground/10 mt-8 pt-8 text-center">
           <p className="text-sm text-secondary-foreground/60">
-            © {new Date().getFullYear()} Fiston Shop Kigali. All rights reserved.
+            © {new Date().getFullYear()} Fiston Shop Kigali. All rights
+            reserved.
           </p>
           <p>
             Developed by
@@ -114,7 +134,8 @@ const Footer = () => {
               rel="noopener noreferrer"
               className="text-primary hover:underline"
             >
-             {" "} Gervais Iradukunda
+              {" "}
+              Gervais Iradukunda
             </a>
           </p>
         </div>
