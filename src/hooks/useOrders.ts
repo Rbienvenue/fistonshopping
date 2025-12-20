@@ -56,7 +56,10 @@ export const useCreateOrder = () => {
         .select()
         .single();
 
-      if (orderError) throw orderError;
+      if (orderError) {
+        console.error('Order creation error:', orderError);
+        throw new Error(orderError.message || 'Failed to create order');
+      }
 
       // Create order items
       const orderItems = items.map(item => ({
@@ -70,7 +73,10 @@ export const useCreateOrder = () => {
         .from('order_items')
         .insert(orderItems);
 
-      if (itemsError) throw itemsError;
+      if (itemsError) {
+        console.error('Order items creation error:', itemsError);
+        throw new Error(itemsError.message || 'Failed to add items to order');
+      }
 
       return order;
     },
@@ -79,6 +85,7 @@ export const useCreateOrder = () => {
       toast.success('Order placed successfully!');
     },
     onError: (error: Error) => {
+      console.error('Order creation failed:', error);
       toast.error(error.message);
     },
   });

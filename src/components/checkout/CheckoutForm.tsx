@@ -105,7 +105,8 @@ const CheckoutForm = () => {
       navigate('/order-success', { state: { orderId: order.id } });
     } catch (error) {
       console.error('Checkout error:', error);
-      toast.error('Failed to place order. Please try again.');
+      const errorMessage = error instanceof Error ? error.message : 'Failed to place order. Please try again.';
+      toast.error(errorMessage);
     } finally {
       setIsUploading(false);
     }
