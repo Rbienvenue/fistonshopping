@@ -29,7 +29,13 @@ const HeroSection = () => {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/20 text-primary-foreground mb-6"
             >
               <Zap className="w-4 h-4" />
-              <span className="text-sm font-medium">Premium Electronics</span>
+              <motion.span 
+                className="text-sm font-medium"
+                animate={{ opacity: [1, 1, 1, 0] }}
+                transition={{ duration: 1, repeat: Infinity }}
+              >
+                🔥Fiston Shop
+              </motion.span>
             </motion.div>
 
             <motion.h1
