@@ -93,7 +93,7 @@ export const useChat = (userId: string | undefined) => {
     return () => {
       subscription.unsubscribe();
     };
-  }, [userId, fetchMessages]);
+  }, [userId]);
 
   return {
     messages,
