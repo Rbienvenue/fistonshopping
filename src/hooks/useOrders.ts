@@ -141,3 +141,36 @@ export const useGetOrderById = (orderId: string) => {
     enabled: !!orderId,
   });
 };
+
+export const useDeleteOrder = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (orderId: string) => {
+      // First, delete order items associated with this order
+      const { error: itemsError } = await supabase
+        .from('order_items')
+        .delete()
+        .eq('order_id', orderId);
+
+      if (itemsError) throw itemsError;
+
+      // Then delete the order itself
+      const { error: orderError } = await supabase
+        .from('orders')
+        .delete()
+        .eq('id', orderId);
+
+      if (orderError) throw orderError;
+
+      return orderId;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['orders'] });
+      toast.success('Order deleted successfully');
+    },
+    onError: (error: Error) => {
+      toast.error(`Failed to delete order: ${error.message}`);
+    },
+  });
+};

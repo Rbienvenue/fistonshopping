@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
-import { useOrders, useUpdateOrderStatus } from '@/hooks/useOrders';
+import { useOrders, useUpdateOrderStatus, useDeleteOrder } from '@/hooks/useOrders';
 import { useProducts, useDeleteProduct, useCreateProduct, useUpdateProduct } from '@/hooks/useProducts';
 import { useImageUpload } from '@/hooks/useImageUpload';
 import { Button } from '@/components/ui/button';
@@ -17,10 +17,20 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/components/ui/dialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { Textarea } from '@/components/ui/textarea';
-import { 
+import {
   LogOut, Package, ShoppingBag, Loader2, Trash2, CheckCircle, XCircle, Clock, 
-  Plus, Edit2, Eye, EyeOff, Calendar 
+  Plus, Edit2, Eye, EyeOff, Calendar, AlertTriangle 
 } from 'lucide-react';
 import {
   Table,
@@ -39,6 +49,7 @@ const Admin = () => {
   const { data: orders = [], isLoading: ordersLoading } = useOrders();
   const { data: products = [], isLoading: productsLoading } = useProducts();
   const updateOrderStatus = useUpdateOrderStatus();
+  const deleteOrder = useDeleteOrder();
   const deleteProduct = useDeleteProduct();
   const createProduct = useCreateProduct();
   const updateProduct = useUpdateProduct();
@@ -53,6 +64,8 @@ const Admin = () => {
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
   const [orderComment, setOrderComment] = useState('');
   const [orderCommentStatus, setOrderCommentStatus] = useState<'pending' | 'approved' | 'rejected'>('pending');
+  const [showDeleteOrderDialog, setShowDeleteOrderDialog] = useState(false);
+  const [orderToDelete, setOrderToDelete] = useState<string | null>(null);
   
   const [newProduct, setNewProduct] = useState({
     name: '',
@@ -206,6 +219,14 @@ const Admin = () => {
     }
   };
 
+  const handleDeleteOrder = async () => {
+    if (orderToDelete) {
+      await deleteOrder.mutateAsync(orderToDelete);
+      setShowDeleteOrderDialog(false);
+      setOrderToDelete(null);
+    }
+  };
+
   return (
     <Layout>
       <div className="container mx-auto px-4 py-8">
@@ -307,6 +328,17 @@ const Admin = () => {
                                 </Button>
                               </div>
                             )}
+                            <Button 
+                              size="sm" 
+                              variant="outline"
+                              className="text-xs h-8 text-destructive hover:text-destructive mt-1"
+                              onClick={() => {
+                                setOrderToDelete(order.id);
+                                setShowDeleteOrderDialog(true);
+                              }}
+                            >
+                              <Trash2 className="w-3 h-3 mr-1" /> Delete
+                            </Button>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -784,6 +816,51 @@ const Admin = () => {
             </DialogFooter>
           </DialogContent>
         </Dialog>
+
+        {/* Delete Order Confirmation Dialog */}
+        <AlertDialog open={showDeleteOrderDialog} onOpenChange={setShowDeleteOrderDialog}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle className="flex items-center gap-2">
+                <AlertTriangle className="w-5 h-5 text-destructive" />
+                Delete Order Permanently?
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                <div className="space-y-2">
+                  <p className="font-semibold text-red-600">Warning: This action cannot be undone!</p>
+                  <p>
+                    Deleting this order will permanently remove:
+                  </p>
+                  <ul className="list-disc list-inside ml-2 text-sm space-y-1">
+                    <li>Order details and history</li>
+                    <li>Customer delivery information</li>
+                    <li>Order items and pricing records</li>
+                    <li>Payment proof and order status tracking</li>
+                    <li>All associated client data with this order</li>
+                  </ul>
+                  <p className="font-semibold mt-3">Are you absolutely sure you want to delete this order? This will cause loss of client's data.</p>
+                </div>
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogAction
+                onClick={handleDeleteOrder}
+                disabled={deleteOrder.isPending}
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              >
+                {deleteOrder.isPending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Deleting...
+                  </>
+                ) : (
+                  'Delete Order'
+                )}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     </Layout>
   );
