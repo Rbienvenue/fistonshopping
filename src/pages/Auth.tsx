@@ -48,8 +48,7 @@ const Auth = () => {
       const { error } = await signUp(
         formData.email,
         formData.password,
-        formData.fullName,
-        ''
+        formData.fullName
       );
 
       if (error) {
