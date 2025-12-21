@@ -171,6 +171,23 @@ const CheckoutForm = () => {
 
         <div>
           <Label htmlFor="paymentProof">Payment Proof Screenshot *</Label>
+          <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-4">
+            <p className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-2">Payment Instructions:</p>
+            <p className="text-xs text-blue-800 dark:text-blue-200 mb-3">
+              Send your payment using the following details:
+            </p>
+            <div className="space-y-4 text-sm font-mono bg-white dark:bg-slate-900 p-4 rounded border border-blue-100 dark:border-blue-800">
+              <div className="text-blue-900 dark:text-blue-100 text-lg font-bold tracking-wider">
+                *182*1*1*0780962739*AMOUNT#
+              </div>
+              <div className="text-blue-900 dark:text-blue-100 text-base font-semibold pt-2 border-t border-blue-100 dark:border-blue-800">
+                In the name of: <span className="text-blue-600 dark:text-blue-400">Innocent NIYIBIZI</span>
+              </div>
+            </div>
+            <p className="text-xs text-blue-700 dark:text-blue-300 mt-3">
+              After payment, upload a screenshot showing the transaction confirmation below.
+            </p>
+          </div>
           <p className="text-sm text-muted-foreground mb-2">
             Upload a screenshot of your mobile money payment
           </p>
