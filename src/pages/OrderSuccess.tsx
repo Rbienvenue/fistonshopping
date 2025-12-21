@@ -55,6 +55,26 @@ const OrderSuccess = () => {
             </motion.div>
           )}
 
+          {/* Payment Reference Section */}
+          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="mb-8">
+            <Card className="p-4 bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800">
+              <p className="text-xs text-blue-900 dark:text-blue-100 uppercase font-semibold mb-3">Payment Reference</p>
+              <div className="space-y-3 text-sm font-mono bg-white dark:bg-slate-900 p-4 rounded border border-blue-100 dark:border-blue-800">
+                <div className="text-blue-900 dark:text-blue-100 text-base font-bold tracking-wider">
+                  *182*1*1*0780962739*AMOUNT#
+                </div>
+                <div className="text-blue-900 dark:text-blue-100 text-sm font-semibold pt-3 border-t border-blue-100 dark:border-blue-800">
+                  In the name of: <span className="text-blue-600 dark:text-blue-400">Innocent NIYIBIZI</span>
+                </div>
+              </div>
+              <div className="bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 rounded p-3 mt-3">
+                <p className="text-xs font-semibold text-amber-900 dark:text-amber-100">
+                  ⚠️ Important: Keep your payment reference code safe for verification purposes.
+                </p>
+              </div>
+            </Card>
+          </motion.div>
+
           <div className="space-y-3">
             {orderId && (
               <Link to="/order-track">
