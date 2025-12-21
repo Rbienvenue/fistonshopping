@@ -255,7 +255,8 @@ const Admin = () => {
                   <Table>
                     <TableHeader>
                       <TableRow className="bg-muted/50">
-                        <TableHead>Client ID</TableHead>
+                        <TableHead>Order ID</TableHead>
+                        <TableHead>Date & Time</TableHead>
                         <TableHead>Full Name</TableHead>
                         <TableHead>Products</TableHead>
                         <TableHead>Amount</TableHead>
@@ -267,7 +268,10 @@ const Admin = () => {
                     <TableBody>
                       {sortedOrders.map((order: OrderWithItems) => (
                         <TableRow key={order.id} className="hover:bg-muted/50">
-                          <TableCell className="font-mono text-xs">{order.id.slice(0, 8)}</TableCell>
+                          <TableCell className="font-mono text-xs">{order.id}</TableCell>
+                          <TableCell className="text-xs whitespace-nowrap">
+                            {new Date(order.created_at).toLocaleString()}
+                          </TableCell>
                           <TableCell>
                             <div>
                               <p className="font-medium">{order.customer_name}</p>
