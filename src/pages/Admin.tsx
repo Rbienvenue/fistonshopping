@@ -666,7 +666,13 @@ const Admin = () => {
                           <div className="flex justify-between items-start mb-2">
                             <div>
                               <h3 className="font-semibold text-lg">{product.name}</h3>
-                              <p className="text-sm text-muted-foreground">{product.category}</p>
+                              <div className="flex gap-3 mt-1">
+                                <p className="text-sm text-muted-foreground">{product.category}</p>
+                                <div className="text-xs text-muted-foreground flex items-center gap-1">
+                                  <Calendar className="w-3 h-3" />
+                                  Added: {new Date(product.created_at).toLocaleString()}
+                                </div>
+                              </div>
                             </div>
                             <div className="text-right">
                               <p className="text-sm font-medium text-muted-foreground">Stock:</p>
