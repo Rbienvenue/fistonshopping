@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ShoppingCart, ArrowLeft, Check } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import Layout from '@/components/layout/Layout';
 import { Button } from '@/components/ui/button';
 import { useProduct, useProducts } from '@/hooks/useProducts';
@@ -9,6 +10,7 @@ import { useCart } from '@/contexts/CartContext';
 import ProductGrid from '@/components/products/ProductGrid';
 import { toast } from 'sonner';
 import { Loader2 } from 'lucide-react';
+import { generateProductStructuredData, generateProductDescription, generateProductKeywords } from '@/lib/seoHelpers';
 
 const ProductDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -66,9 +68,64 @@ const ProductDetail = () => {
   };
 
   const mainImage = product.images?.[0] || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&h=400&fit=crop';
+  
+  // Generate SEO content
+  const metaDescription = generateProductDescription({
+    name: product.name,
+    price: product.price,
+    category: product.category
+  });
+  
+  const metaKeywords = generateProductKeywords({
+    name: product.name,
+    category: product.category
+  });
+
+  const canonicalUrl = `https://fistonshopping.com/products/${id}`;
+  const structuredData = generateProductStructuredData({
+    name: product.name,
+    description: product.description,
+    price: product.price,
+    category: product.category,
+    image: mainImage,
+    id: product.id,
+    inStock: product.in_stock
+  });
 
   return (
     <Layout>
+      <Helmet>
+        <title>{product.name} - Fiston Shopping</title>
+        <meta name="description" content={metaDescription} />
+        <meta name="keywords" content={metaKeywords} />
+        <meta name="author" content="Fiston Shopping" />
+        <link rel="canonical" href={canonicalUrl} />
+        
+        {/* Open Graph / Social Media */}
+        <meta property="og:type" content="product" />
+        <meta property="og:title" content={`${product.name} - Fiston Shopping`} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:image" content={mainImage} />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:site_name" content="Fiston Shopping" />
+        
+        {/* Twitter Card */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={`${product.name} - Fiston Shopping`} />
+        <meta name="twitter:description" content={metaDescription} />
+        <meta name="twitter:image" content={mainImage} />
+        
+        {/* Price */}
+        <meta property="product:price:amount" content={product.price.toString()} />
+        <meta property="product:price:currency" content="RWF" />
+        <meta property="product:availability" content={product.in_stock ? "in stock" : "out of stock"} />
+        
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      </Helmet>
+
       <div className="container mx-auto px-4 py-8">
         <Link to="/products" className="inline-flex items-center gap-2 text-muted-foreground hover:text-foreground mb-6">
           <ArrowLeft className="w-4 h-4" /> Back to Products
