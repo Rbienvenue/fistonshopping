@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ShoppingCart, ArrowLeft, Check } from 'lucide-react';
@@ -15,6 +15,19 @@ const ProductDetail = () => {
   const { data: product, isLoading } = useProduct(id || '');
   const { data: allProducts = [] } = useProducts();
   const { addItem } = useCart();
+
+  // Update page title with product name
+  useEffect(() => {
+    if (product?.name) {
+      document.title = `${product.name} - Fiston Shopping`;
+    } else if (isLoading) {
+      document.title = 'Loading... - Fiston Shopping';
+    }
+    
+    return () => {
+      document.title = 'Fiston Shopping';
+    };
+  }, [product, isLoading]);
 
   const relatedProducts = allProducts
     .filter((p) => p.category === product?.category && p.id !== product?.id)
