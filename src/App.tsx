@@ -17,9 +17,13 @@ import Chat from "./pages/Chat";
 import OrderSuccess from "./pages/OrderSuccess";
 import OrderTrack from "./pages/OrderTrack";
 import Profile from "./pages/Profile";
+import ServerError from "./pages/ServerError";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
+
+// Set to false to restore normal routing
+const SERVER_MAINTENANCE = true;
 
 const App = () => (
   <HelmetProvider>
@@ -30,6 +34,9 @@ const App = () => (
             <TooltipProvider>
               <Toaster />
               <Sonner />
+              {SERVER_MAINTENANCE ? (
+                <ServerError />
+              ) : (
               <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
               <Routes>
                 <Route path="/" element={<Index />} />
@@ -42,9 +49,11 @@ const App = () => (
                 <Route path="/order-success" element={<OrderSuccess />} />
                 <Route path="/order-track" element={<OrderTrack />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/server-error" element={<ServerError />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
+              )}
             </TooltipProvider>
           </CartProvider>
         </AuthProvider>
