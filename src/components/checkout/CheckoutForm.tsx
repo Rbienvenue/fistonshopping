@@ -7,7 +7,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { useCart } from '@/contexts/CartContext';
 import { useCreateOrder } from '@/hooks/useOrders';
-import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
@@ -51,19 +50,7 @@ const CheckoutForm = () => {
 
   const uploadPaymentProof = async (): Promise<string> => {
     if (!paymentProof) throw new Error('No payment proof selected');
-
-    const fileExt = paymentProof.name.split('.').pop();
-    const fileName = `${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
-
-    const { error: uploadError } = await supabase.storage
-      .from('payment-proofs')
-      .upload(fileName, paymentProof);
-
-    if (uploadError) throw uploadError;
-
-    // For private buckets, store the file path (not URL)
-    // Signed URLs will be generated dynamically when admin views the proof
-    return fileName;
+    return paymentProof.name;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

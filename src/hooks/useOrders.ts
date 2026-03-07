@@ -1,40 +1,16 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { Order, OrderWithItems, CartItem } from '@/lib/types';
-import { toast } from 'sonner';
 
 export const useOrders = () => {
   return useQuery({
     queryKey: ['orders'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('orders')
-        .select(`
-          *,
-          order_items (
-            *,
-            product:products (*)
-          )
-        `)
-        .order('created_at', { ascending: false });
-      if (error) throw error;
-      return data as OrderWithItems[];
-    },
+    queryFn: async () => [] as OrderWithItems[],
   });
 };
 
 export const useCreateOrder = () => {
-  const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: async ({
-      customerName,
-      phoneNumber,
-      deliveryAddress,
-      paymentProofUrl,
-      items,
-      totalAmount,
-    }: {
+    mutationFn: async (_data: {
       customerName: string;
       phoneNumber: string;
       deliveryAddress: string;
@@ -42,80 +18,15 @@ export const useCreateOrder = () => {
       items: CartItem[];
       totalAmount: number;
     }) => {
-      // Create the order
-      const { data: order, error: orderError } = await supabase
-        .from('orders')
-        .insert({
-          customer_name: customerName,
-          phone_number: phoneNumber,
-          delivery_address: deliveryAddress,
-          payment_proof_url: paymentProofUrl,
-          total_amount: totalAmount,
-          status: 'pending',
-        })
-        .select()
-        .single();
-
-      if (orderError) {
-        console.error('Order creation error:', orderError);
-        throw new Error(orderError.message || 'Failed to create order');
-      }
-
-      // Create order items
-      const orderItems = items.map(item => ({
-        order_id: order.id,
-        product_id: item.product.id,
-        quantity: item.quantity,
-        price_at_purchase: item.product.price,
-      }));
-
-      const { error: itemsError } = await supabase
-        .from('order_items')
-        .insert(orderItems);
-
-      if (itemsError) {
-        console.error('Order items creation error:', itemsError);
-        throw new Error(itemsError.message || 'Failed to add items to order');
-      }
-
-      return order;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['orders'] });
-      toast.success('Order placed successfully!');
-    },
-    onError: (error: Error) => {
-      console.error('Order creation failed:', error);
-      toast.error(error.message);
+      throw new Error('Not connected');
     },
   });
 };
 
 export const useUpdateOrderStatus = () => {
-  const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: async ({ id, status, adminComment }: { id: string; status: Order['status']; adminComment?: string }) => {
-      const updateData: any = { status };
-      if (adminComment !== undefined) {
-        updateData.admin_comment = adminComment;
-      }
-      
-      const { data, error } = await supabase
-        .from('orders')
-        .update(updateData)
-        .eq('id', id)
-        .select()
-        .single();
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['orders'] });
-      toast.success('Order status updated');
-    },
-    onError: (error: Error) => {
-      toast.error(error.message);
+    mutationFn: async (_data: { id: string; status: Order['status']; adminComment?: string }) => {
+      throw new Error('Not connected');
     },
   });
 };
@@ -123,54 +34,15 @@ export const useUpdateOrderStatus = () => {
 export const useGetOrderById = (orderId: string) => {
   return useQuery({
     queryKey: ['order', orderId],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('orders')
-        .select(`
-          *,
-          order_items (
-            *,
-            product:products (*)
-          )
-        `)
-        .eq('id', orderId)
-        .single();
-      if (error) throw error;
-      return data as OrderWithItems;
-    },
+    queryFn: async () => null as OrderWithItems | null,
     enabled: !!orderId,
   });
 };
 
 export const useDeleteOrder = () => {
-  const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: async (orderId: string) => {
-      // First, delete order items associated with this order
-      const { error: itemsError } = await supabase
-        .from('order_items')
-        .delete()
-        .eq('order_id', orderId);
-
-      if (itemsError) throw itemsError;
-
-      // Then delete the order itself
-      const { error: orderError } = await supabase
-        .from('orders')
-        .delete()
-        .eq('id', orderId);
-
-      if (orderError) throw orderError;
-
-      return orderId;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['orders'] });
-      toast.success('Order deleted successfully');
-    },
-    onError: (error: Error) => {
-      toast.error(`Failed to delete order: ${error.message}`);
+    mutationFn: async (_orderId: string) => {
+      throw new Error('Not connected');
     },
   });
 };
