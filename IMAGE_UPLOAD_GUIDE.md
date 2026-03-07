@@ -1,12 +1,12 @@
-# Image Upload Implementation Guide
+Image Upload Implementation Guide
 
-## 📋 Overview
+📋 Overview
 
 This guide walks through implementing the image upload feature in the admin dashboard using the `useImageUpload` hook.
 
 ---
 
-## 🗂️ File Structure
+🗂️ File Structure
 
 ```
 src/
@@ -20,17 +20,17 @@ src/
 
 ---
 
-## 🔧 Implementation Steps
+🔧 Implementation Steps
 
-### Step 1: Already Done ✅
+Step 1: Already Done ✅
 The following files are already created:
 - ✅ `src/hooks/useImageUpload.ts` - Upload utilities
 - ✅ `src/pages/Admin.tsx` - Enhanced admin dashboard
 - ✅ `supabase/migrations/20251218_add_product_management.sql` - Database setup
 
-### Step 2: Run Database Migration
+Step 2: Run Database Migration
 
-#### Option A: Supabase Dashboard
+Option A: Supabase Dashboard
 1. Go to https://app.supabase.com
 2. Select your project: `xmnggboqigffehnfvuif`
 3. Go to SQL Editor
@@ -39,12 +39,12 @@ The following files are already created:
 6. Click "Run"
 7. Verify all statements execute successfully
 
-#### Option B: Supabase CLI (if set up)
+Option B: Supabase CLI (if set up)
 ```bash
 supabase migration up
 ```
 
-### Step 3: Update Product Type (Already Done ✅)
+Step 3: Update Product Type (Already Done ✅)
 
 The `Product` type in `src/lib/types.ts` already includes:
 ```typescript
@@ -56,11 +56,11 @@ export interface Product {
 }
 ```
 
-### Step 4: Integrate Image Upload in Admin Dashboard
+Step 4: Integrate Image Upload in Admin Dashboard
 
 The admin dashboard already has the form structure. Now update the `handleAddProduct` function:
 
-#### Current Code (in `/src/pages/Admin.tsx`)
+Current Code (in `/src/pages/Admin.tsx`)
 ```typescript
 const handleAddProduct = async (e: React.FormEvent) => {
   e.preventDefault();
@@ -71,7 +71,7 @@ const handleAddProduct = async (e: React.FormEvent) => {
 };
 ```
 
-#### Updated Code with Image Upload
+Updated Code with Image Upload
 ```typescript
 const handleAddProduct = async (e: React.FormEvent) => {
   e.preventDefault();
@@ -143,11 +143,11 @@ const handleAddProduct = async (e: React.FormEvent) => {
 
 ---
 
-## 📸 Image Upload Hook Usage
+📸 Image Upload Hook Usage
 
-### Function Signatures
+Function Signatures
 
-#### `uploadProductImages(files, options?)`
+`uploadProductImages(files, options?)`
 Uploads multiple product images
 
 ```typescript
@@ -156,7 +156,7 @@ const results = await uploadProductImages(files);
 
 // With options
 const results = await uploadProductImages(files, {
-  maxSize: 10 * 1024 * 1024, // 10MB
+  maxSize: 10  1024  1024, // 10MB
   allowedTypes: ['image/jpeg', 'image/png'],
 });
 
@@ -171,7 +171,7 @@ const results = await uploadProductImages(files, {
 ]
 ```
 
-#### `uploadPaymentProof(file)`
+`uploadPaymentProof(file)`
 Uploads single payment proof
 
 ```typescript
@@ -179,7 +179,7 @@ const result = await uploadPaymentProof(file);
 // result: { url, path, size } or null
 ```
 
-#### `deleteProductImage(imagePath)`
+`deleteProductImage(imagePath)`
 Deletes a product image
 
 ```typescript
@@ -189,16 +189,16 @@ const success = await deleteProductImage('products/product-123.jpg');
 
 ---
 
-## 🎨 UI Components for Upload
+🎨 UI Components for Upload
 
-### File Input Component
+File Input Component
 ```typescript
 <div>
   <Label htmlFor="images">Product Images</Label>
   <Input
     id="images"
     type="file"
-    accept="image/*"
+    accept="image/"
     multiple
     required
   />
@@ -208,7 +208,7 @@ const success = await deleteProductImage('products/product-123.jpg');
 </div>
 ```
 
-### Upload Progress Indicator
+Upload Progress Indicator
 ```typescript
 {isUploading && (
   <div className="flex items-center gap-2">
@@ -220,14 +220,14 @@ const success = await deleteProductImage('products/product-123.jpg');
 
 ---
 
-## ✨ Advanced Features
+✨ Advanced Features
 
-### Image Validation
+Image Validation
 
 ```typescript
 // Check before upload
 const validateImage = (file: File): boolean => {
-  const maxSize = 5 * 1024 * 1024; // 5MB
+  const maxSize = 5  1024  1024; // 5MB
   const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
   
   if (file.size > maxSize) {
@@ -244,7 +244,7 @@ const validateImage = (file: File): boolean => {
 };
 ```
 
-### Image Cropping (Optional Enhancement)
+Image Cropping (Optional Enhancement)
 
 Install react-image-crop:
 ```bash
@@ -260,7 +260,7 @@ const croppedImage = await cropImage(file, { width: 400, height: 300 });
 const results = await uploadProductImages([croppedImage]);
 ```
 
-### Batch Delete
+Batch Delete
 ```typescript
 const deleteMultipleImages = async (paths: string[]) => {
   for (const path of paths) {
@@ -271,7 +271,7 @@ const deleteMultipleImages = async (paths: string[]) => {
 
 ---
 
-## 🔐 Security Checklist
+🔐 Security Checklist
 
 - ✅ File size limits (5MB for product images, 10MB for payment proofs)
 - ✅ File type validation (JPEG, PNG, WebP, GIF for products; PDF for proofs)
@@ -283,9 +283,9 @@ const deleteMultipleImages = async (paths: string[]) => {
 
 ---
 
-## 📊 Database Changes
+📊 Database Changes
 
-### Products Table - New Columns
+Products Table - New Columns
 ```sql
 -- Stock tracking
 ALTER TABLE products ADD stock_quantity INTEGER DEFAULT 0;
@@ -298,7 +298,7 @@ ALTER TABLE products ADD discount_expiry TIMESTAMP;
 ALTER TABLE products ADD is_active BOOLEAN DEFAULT true;
 ```
 
-### Storage Buckets
+Storage Buckets
 ```
 product-images/
 ├── products/
@@ -315,15 +315,15 @@ payment-proofs/
 
 ---
 
-## 🧪 Testing
+🧪 Testing
 
-### Manual Test Flow
+Manual Test Flow
 
-1. **Create Admin User**
+1. Create Admin User
    - Sign up with email
    - Set `is_admin = true` in profiles table
 
-2. **Test Image Upload**
+2. Test Image Upload
    - Go to Admin Dashboard
    - Click "Add Product"
    - Fill form
@@ -333,43 +333,43 @@ payment-proofs/
    - Check: Toast notification appears
    - Check: Product appears in list
 
-3. **Verify Storage**
+3. Verify Storage
    - Supabase Dashboard → Storage
    - Check `product-images` bucket
    - Verify files were uploaded
    - Check file names (auto-generated)
 
-4. **Test Image Display**
+4. Test Image Display
    - Go to Products page
    - Check image displays
    - Check on mobile (responsive)
 
-5. **Test Deletion**
+5. Test Deletion
    - Admin Dashboard → Products
    - Click delete on a product
    - Verify image removed from storage
 
 ---
 
-## 🐛 Troubleshooting
+🐛 Troubleshooting
 
-### Images not uploading
+Images not uploading
 
-**Problem:** Upload fails silently
+Problem: Upload fails silently
 ```typescript
 // Check 1: RLS Policy
-SELECT * FROM storage.objects WHERE bucket_id = 'product-images';
+SELECT  FROM storage.objects WHERE bucket_id = 'product-images';
 
 -- Check 2: Bucket exists
-SELECT * FROM storage.buckets WHERE id = 'product-images';
+SELECT  FROM storage.buckets WHERE id = 'product-images';
 
 -- Check 3: User is admin
 SELECT is_admin FROM profiles WHERE id = auth.uid();
 ```
 
-### Upload progress not showing
+Upload progress not showing
 
-**Problem:** `uploadProgress` state not updating
+Problem: `uploadProgress` state not updating
 
 ```typescript
 // Add dependency array to useCallback
@@ -378,9 +378,9 @@ const uploadProductImages = useCallback(async (...) => {
 }, [setUploadProgress]); // Include setUploadProgress
 ```
 
-### File size errors
+File size errors
 
-**Problem:** "File exceeds maximum size" error
+Problem: "File exceeds maximum size" error
 
 ```typescript
 // Check file sizes before upload
@@ -389,9 +389,9 @@ Array.from(files).forEach(file => {
 });
 ```
 
-### CORS issues
+CORS issues
 
-**Problem:** "Failed to fetch" when uploading
+Problem: "Failed to fetch" when uploading
 
 ```typescript
 // Verify Supabase CORS settings
@@ -401,9 +401,9 @@ Array.from(files).forEach(file => {
 
 ---
 
-## 📈 Performance Optimization
+📈 Performance Optimization
 
-### Lazy Load Images
+Lazy Load Images
 ```typescript
 <img 
   src={image} 
@@ -413,7 +413,7 @@ Array.from(files).forEach(file => {
 />
 ```
 
-### Optimize File Size Before Upload
+Optimize File Size Before Upload
 ```typescript
 const optimizeImage = async (file: File): Promise<Blob> => {
   const canvas = document.createElement('canvas');
@@ -431,7 +431,7 @@ const optimizeImage = async (file: File): Promise<Blob> => {
 };
 ```
 
-### Cache Control
+Cache Control
 Already configured in `useImageUpload.ts`:
 ```typescript
 cacheControl: '3600' // 1 hour
@@ -439,7 +439,7 @@ cacheControl: '3600' // 1 hour
 
 ---
 
-## ✅ Checklist for Deployment
+✅ Checklist for Deployment
 
 - [ ] Run SQL migration
 - [ ] Test image upload as admin
@@ -453,7 +453,7 @@ cacheControl: '3600' // 1 hour
 
 ---
 
-## 📚 Related Files
+📚 Related Files
 
 - 📄 [PROJECT_WALKTHROUGH.md](PROJECT_WALKTHROUGH.md) - Complete project overview
 - 🗄️ `supabase/migrations/20251218_add_product_management.sql` - Database setup
@@ -462,5 +462,5 @@ cacheControl: '3600' // 1 hour
 
 ---
 
-**Created:** December 18, 2025  
-**Updated:** December 18, 2025
+Created: December 18, 2025  
+Updated: December 18, 2025

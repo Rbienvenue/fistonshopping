@@ -1,13 +1,13 @@
-# Fiston Shop Connect - Complete Project Walkthrough
+Fiston Shop Connect - Complete Project Walkthrough
 
-## 📋 Project Overview
+📋 Project Overview
 Fiston Shop Connect is a modern e-commerce platform built with React, TypeScript, Vite, and Supabase. It features product management, shopping cart, order processing, and admin dashboard.
 
 ---
 
-## 🗂️ Project Structure
+🗂️ Project Structure
 
-### Root Files
+Root Files
 ```
 ├── package.json              # Dependencies and scripts
 ├── vite.config.ts           # Vite configuration
@@ -21,19 +21,19 @@ Fiston Shop Connect is a modern e-commerce platform built with React, TypeScript
 └── bun.lockb                # Bun package lock file
 ```
 
-### Directory Structure
+Directory Structure
 
-#### `/src`
+`/src`
 Main application source code
 
-**Core Files:**
+Core Files:
 - `main.tsx` - React entry point with React-DOM rendering
 - `App.tsx` - Main app component with routing and providers
 - `App.css` - Global styles
 - `index.css` - CSS reset and global utilities
 - `vite-env.d.ts` - Vite environment type definitions
 
-#### `/src/pages`
+`/src/pages`
 Page components (route-based)
 
 | File | Purpose |
@@ -43,18 +43,18 @@ Page components (route-based)
 | `Products.tsx` | Products listing page with filtering |
 | `ProductDetail.tsx` | Single product detail view |
 | `Cart.tsx` | Shopping cart page |
-| `Admin.tsx` | **Admin dashboard** (orders + products management) |
+| `Admin.tsx` | Admin dashboard (orders + products management) |
 | `OrderSuccess.tsx` | Order confirmation page |
 | `NotFound.tsx` | 404 error page |
 
-#### `/src/components`
+`/src/components`
 
-**Layout Components:**
+Layout Components:
 - `layout/Layout.tsx` - Main layout wrapper
 - `layout/Header.tsx` - Navigation header
 - `layout/Footer.tsx` - Footer
 
-**Feature Components:**
+Feature Components:
 - `NavLink.tsx` - Navigation link component
 - `home/HeroSection.tsx` - Hero banner
 - `home/FeaturedProducts.tsx` - Featured products showcase
@@ -65,11 +65,11 @@ Page components (route-based)
 - `cart/CartItem.tsx` - Individual cart item
 - `checkout/CheckoutForm.tsx` - Checkout form
 
-**UI Components:** (Shadcn/ui)
+UI Components: (Shadcn/ui)
 - `ui/` - 40+ pre-built UI components
   - Buttons, Forms, Dialogs, Cards, Tables, etc.
 
-#### `/src/contexts`
+`/src/contexts`
 React Context for state management
 
 | File | Purpose |
@@ -78,7 +78,7 @@ React Context for state management
 | `CartContext.tsx` | Shopping cart state |
 | `ThemeContext.tsx` | Theme (dark/light mode) |
 
-#### `/src/hooks`
+`/src/hooks`
 Custom React hooks
 
 | File | Purpose |
@@ -86,11 +86,11 @@ Custom React hooks
 | `useProducts.ts` | Product queries and mutations |
 | `useOrders.ts` | Order queries and mutations |
 | `useAdminSettings.ts` | Admin settings queries |
-| `useImageUpload.ts` | **NEW** - Image upload utilities |
+| `useImageUpload.ts` | NEW - Image upload utilities |
 | `use-toast.ts` | Toast notifications |
 | `use-mobile.tsx` | Mobile detection |
 
-#### `/src/lib`
+`/src/lib`
 Utilities and types
 
 | File | Purpose |
@@ -98,7 +98,7 @@ Utilities and types
 | `types.ts` | TypeScript interfaces |
 | `utils.ts` | Helper functions |
 
-#### `/src/integrations`
+`/src/integrations`
 Third-party service integrations
 
 | File | Purpose |
@@ -106,27 +106,27 @@ Third-party service integrations
 | `supabase/client.ts` | Supabase client initialization |
 | `supabase/types.ts` | Generated Supabase types |
 
-#### `/supabase`
+`/supabase`
 Supabase configuration and migrations
 
 ```
 ├── config.toml              # Supabase project config
 └── migrations/
-    ├── 20251216155206_*.sql # Initial schema migration
-    └── 20251218_*.sql       # **NEW** - Product management migration
+    ├── 20251216155206_.sql # Initial schema migration
+    └── 20251218_.sql       # NEW - Product management migration
 ```
 
-#### `/public`
+`/public`
 Static assets
 - `robots.txt` - SEO robot rules
 
 ---
 
-## 📊 Database Schema
+📊 Database Schema
 
-### Tables
+Tables
 
-#### `profiles` (User Profiles)
+`profiles` (User Profiles)
 ```sql
 - id: UUID (PK, FK to auth.users)
 - email: TEXT
@@ -136,7 +136,7 @@ Static assets
 - updated_at: TIMESTAMP
 ```
 
-#### `products`
+`products`
 ```sql
 - id: UUID (PK)
 - name: TEXT
@@ -153,7 +153,7 @@ Static assets
 - updated_at: TIMESTAMP
 ```
 
-#### `orders`
+`orders`
 ```sql
 - id: UUID (PK)
 - customer_name: TEXT
@@ -166,7 +166,7 @@ Static assets
 - updated_at: TIMESTAMP
 ```
 
-#### `order_items`
+`order_items`
 ```sql
 - id: UUID (PK)
 - order_id: UUID (FK to orders)
@@ -176,7 +176,7 @@ Static assets
 - created_at: TIMESTAMP
 ```
 
-#### `admin_settings`
+`admin_settings`
 ```sql
 - id: UUID (PK)
 - store_name: TEXT
@@ -188,15 +188,15 @@ Static assets
 - updated_at: TIMESTAMP
 ```
 
-### Storage Buckets
+Storage Buckets
 
-#### `product-images` (PUBLIC)
+`product-images` (PUBLIC)
 - Purpose: Product photos
 - Access: Public read, Admin write
 - File limit: 5MB
 - Allowed types: JPEG, PNG, WebP, GIF
 
-#### `payment-proofs` (PRIVATE)
+`payment-proofs` (PRIVATE)
 - Purpose: Payment verification images
 - Access: Public write, Admin read
 - File limit: 10MB
@@ -204,29 +204,29 @@ Static assets
 
 ---
 
-## 🔐 Row Level Security (RLS) Policies
+🔐 Row Level Security (RLS) Policies
 
-### Products Table
-- **SELECT**: Anyone can view
-- **INSERT/UPDATE/DELETE**: Only admins
+Products Table
+- SELECT: Anyone can view
+- INSERT/UPDATE/DELETE: Only admins
 
-### Orders Table
-- **INSERT**: Anyone can create
-- **SELECT/UPDATE**: Only admins
+Orders Table
+- INSERT: Anyone can create
+- SELECT/UPDATE: Only admins
 
-### Storage Objects (product-images)
-- **SELECT**: Anyone (public bucket)
-- **INSERT/UPDATE/DELETE**: Only admins
+Storage Objects (product-images)
+- SELECT: Anyone (public bucket)
+- INSERT/UPDATE/DELETE: Only admins
 
-### Storage Objects (payment-proofs)
-- **INSERT**: Anyone
-- **SELECT**: Only admins
+Storage Objects (payment-proofs)
+- INSERT: Anyone
+- SELECT: Only admins
 
 ---
 
-## 🔄 Data Flow
+🔄 Data Flow
 
-### User Authentication Flow
+User Authentication Flow
 ```
 1. User signs up on Auth page
    ↓
@@ -239,7 +239,7 @@ Static assets
 5. Redirected to home page
 ```
 
-### Product Upload Flow
+Product Upload Flow
 ```
 1. Admin opens Admin Dashboard
    ↓
@@ -254,7 +254,7 @@ Static assets
 6. Product appears on homepage
 ```
 
-### Order Flow
+Order Flow
 ```
 1. Customer selects products
    ↓
@@ -277,9 +277,9 @@ Static assets
 
 ---
 
-## 🎯 Key Features
+🎯 Key Features
 
-### ✅ Completed
+✅ Completed
 - [x] User authentication (Supabase Auth)
 - [x] Product listing and filtering
 - [x] Shopping cart functionality
@@ -290,7 +290,7 @@ Static assets
 - [x] Responsive design
 - [x] Toast notifications
 
-### 🚀 New/Enhanced
+🚀 New/Enhanced
 - [x] Improved admin dashboard with table layout
 - [x] Product stock tracking
 - [x] Discount management
@@ -298,7 +298,7 @@ Static assets
 - [x] Storage bucket configuration
 - [x] SQL migration with indexes
 
-### 📋 TODO
+📋 TODO
 - [ ] Image cropping before upload
 - [ ] Product edit functionality
 - [ ] Batch operations
@@ -309,40 +309,40 @@ Static assets
 
 ---
 
-## 📦 Dependencies
+📦 Dependencies
 
-### Core
+Core
 - `react` - UI library
 - `react-router-dom` - Routing with future flags enabled
 - `typescript` - Type safety
 
-### State Management
+State Management
 - `@tanstack/react-query` - Server state management
 - Context API - Local state
 
-### UI Framework
+UI Framework
 - `shadcn/ui` - Component library
 - `tailwindcss` - Styling
 - `lucide-react` - Icons
 - `framer-motion` - Animations
 
-### Backend
+Backend
 - `@supabase/supabase-js` - Backend service
 
-### Forms
+Forms
 - `react-hook-form` - Form management
 - `@hookform/resolvers` - Form validation
 
-### Notifications
+Notifications
 - `sonner` - Toast notifications
 
-### Build Tools
+Build Tools
 - `vite` - Build tool
 - `esbuild` - Bundler
 
 ---
 
-## 🛠️ Environment Variables
+🛠️ Environment Variables
 
 ```env
 VITE_SUPABASE_URL=https://xmnggboqigffehnfvuif.supabase.co
@@ -352,23 +352,23 @@ VITE_SUPABASE_PUBLISHABLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ---
 
-## 🚀 Quick Start
+🚀 Quick Start
 
-### 1. Install Dependencies
+1. Install Dependencies
 ```bash
 npm install
-# or
+or
 bun install
 ```
 
-### 2. Run Development Server
+2. Run Development Server
 ```bash
 npm run dev
-# or
+or
 bun run dev
 ```
 
-### 3. Deploy to Production
+3. Deploy to Production
 ```bash
 npm run build
 npm run preview
@@ -376,7 +376,7 @@ npm run preview
 
 ---
 
-## 📱 Routes
+📱 Routes
 
 | Path | Component | Access |
 |------|-----------|--------|
@@ -387,13 +387,13 @@ npm run preview
 | `/auth` | Auth | Public |
 | `/admin` | Admin | Admin only |
 | `/order-success` | OrderSuccess | Public |
-| `*` | NotFound | Public |
+| `` | NotFound | Public |
 
 ---
 
-## 🔧 Admin Dashboard Features
+🔧 Admin Dashboard Features
 
-### Orders Tab
+Orders Tab
 - View all orders in table format
 - See customer details (name, phone, address)
 - View payment proofs
@@ -401,14 +401,14 @@ npm run preview
 - Status filtering
 - Sorted: Pending/Approved first, Rejected last
 
-### Products Tab
-- **View Products**
+Products Tab
+- View Products
   - Thumbnail preview
   - Stock quantity indicator
   - Price and discount info
   - Discount expiry countdown
 
-- **Add Product Form**
+- Add Product Form
   - Product name & category
   - Description (textarea)
   - Regular & discounted price
@@ -416,28 +416,28 @@ npm run preview
   - Discount expiry date
   - Multiple image upload
 
-- **Product Actions**
+- Product Actions
   - Edit button
   - Delete button
 
 ---
 
-## 📚 Database Migration
+📚 Database Migration
 
-### Running the New Migration
+Running the New Migration
 
-1. **In Supabase Dashboard:**
+1. In Supabase Dashboard:
    ```sql
    -- Copy and run the SQL from:
    -- supabase/migrations/20251218_add_product_management.sql
    ```
 
-2. **Or via Supabase CLI:**
+2. Or via Supabase CLI:
    ```bash
    supabase migration up
    ```
 
-### What the Migration Does
+What the Migration Does
 1. ✅ Adds `stock_quantity` column to products
 2. ✅ Adds `discounted_price` column
 3. ✅ Adds `discount_expiry` timestamp
@@ -450,9 +450,9 @@ npm run preview
 
 ---
 
-## 🖼️ Image Upload Implementation
+🖼️ Image Upload Implementation
 
-### Using the `useImageUpload` Hook
+Using the `useImageUpload` Hook
 
 ```typescript
 import { useImageUpload } from '@/hooks/useImageUpload';
@@ -474,7 +474,7 @@ function AdminDashboard() {
 }
 ```
 
-### Features
+Features
 - Multi-file upload
 - Progress tracking
 - File validation (size, type)
@@ -485,7 +485,7 @@ function AdminDashboard() {
 
 ---
 
-## 🔐 Security Best Practices
+🔐 Security Best Practices
 
 1. ✅ RLS enabled on all tables
 2. ✅ Admin checks before mutations
@@ -497,17 +497,17 @@ function AdminDashboard() {
 
 ---
 
-## 📝 Next Steps
+📝 Next Steps
 
-1. **Run the SQL Migration** to set up storage buckets
-2. **Test Image Upload** with admin account
-3. **Update Admin Dashboard** to use `useImageUpload` hook
-4. **Add Image Cropping** (optional enhancement)
-5. **Deploy to Production**
+1. Run the SQL Migration to set up storage buckets
+2. Test Image Upload with admin account
+3. Update Admin Dashboard to use `useImageUpload` hook
+4. Add Image Cropping (optional enhancement)
+5. Deploy to Production
 
 ---
 
-## 📞 Support
+📞 Support
 
 For issues or questions:
 1. Check Supabase documentation
@@ -517,5 +517,5 @@ For issues or questions:
 
 ---
 
-**Project Created:** December 2025  
-**Last Updated:** December 18, 2025
+Project Created: December 2025  
+Last Updated: December 18, 2025

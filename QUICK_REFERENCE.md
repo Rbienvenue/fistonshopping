@@ -1,8 +1,8 @@
-# 🚀 Quick Reference - Fiston Shop Connect
+🚀 Quick Reference - Fiston Shop Connect
 
-## 🎯 What's Included
+🎯 What's Included
 
-### ✅ Complete Features
+✅ Complete Features
 - User authentication (signup/login)
 - Product listing & filtering
 - Shopping cart
@@ -12,7 +12,7 @@
 - Dark/Light theme
 - Responsive design
 
-### 🆕 New Features
+🆕 New Features
 - Enhanced admin dashboard (table layout)
 - Product stock tracking
 - Discount management
@@ -21,9 +21,9 @@
 
 ---
 
-## 📊 Database Schema at a Glance
+📊 Database Schema at a Glance
 
-### Products Table
+Products Table
 ```
 id (UUID)
 ├── name (TEXT)
@@ -40,7 +40,7 @@ id (UUID)
 └── updated_at (TIMESTAMP)
 ```
 
-### Orders Table
+Orders Table
 ```
 id (UUID)
 ├── customer_name (TEXT)
@@ -53,7 +53,7 @@ id (UUID)
 └── updated_at (TIMESTAMP)
 ```
 
-### Storage Buckets
+Storage Buckets
 ```
 product-images/ (PUBLIC)
 ├── Read: Anyone ✅
@@ -70,11 +70,11 @@ payment-proofs/ (PRIVATE)
 
 ---
 
-## 🧭 File Navigation
+🧭 File Navigation
 
-### Want to...
+Want to...
 
-**Build a feature?**
+Build a feature?
 ```
 Start in: src/pages/
 Create component in: src/components/
@@ -82,21 +82,21 @@ Add hook in: src/hooks/
 Add type in: src/lib/types.ts
 ```
 
-**Add a database table?**
+Add a database table?
 ```
-Create migration: supabase/migrations/YYYYMMDD_*.sql
+Create migration: supabase/migrations/YYYYMMDD_.sql
 Update types: src/integrations/supabase/types.ts
 Create hook: src/hooks/useNewTable.ts
 ```
 
-**Handle images?**
+Handle images?
 ```
 Use hook: import { useImageUpload } from '@/hooks/useImageUpload';
 Upload: uploadProductImages(files)
 Delete: deleteProductImage(path)
 ```
 
-**Manage state?**
+Manage state?
 ```
 Global: Use Context (src/contexts/)
 Server: Use React Query (src/hooks/)
@@ -105,9 +105,9 @@ Local: Use useState()
 
 ---
 
-## 💻 Commands
+💻 Commands
 
-### Development
+Development
 ```bash
 npm run dev          # Start dev server
 npm run build        # Production build
@@ -115,7 +115,7 @@ npm run preview      # Preview build
 npm run lint         # Check code
 ```
 
-### Database
+Database
 ```bash
 supabase migration up    # Apply migrations
 supabase migration new   # Create migration
@@ -123,9 +123,9 @@ supabase migration new   # Create migration
 
 ---
 
-## 🔐 Admin Features
+🔐 Admin Features
 
-### Access
+Access
 ```typescript
 // Admin only page
 import { Navigate } from 'react-router-dom';
@@ -134,12 +134,12 @@ import { useAuth } from '@/contexts/AuthContext';
 if (!user || !isAdmin) return <Navigate to="/" />;
 ```
 
-### Required Setup
+Required Setup
 1. Create user account
 2. Set `is_admin = true` in profiles table
 3. Access /admin route
 
-### Permissions
+Permissions
 - ✅ View all orders
 - ✅ Approve/reject orders
 - ✅ Add/edit/delete products
@@ -149,7 +149,7 @@ if (!user || !isAdmin) return <Navigate to="/" />;
 
 ---
 
-## 📱 Routes
+📱 Routes
 
 | Route | Component | Auth | Admin |
 |-------|-----------|------|-------|
@@ -160,18 +160,18 @@ if (!user || !isAdmin) return <Navigate to="/" />;
 | /auth | Auth | ❌ | ❌ |
 | /admin | Admin | ✅ | ✅ |
 | /order-success | OrderSuccess | ❌ | ❌ |
-| * | NotFound | ❌ | ❌ |
+|  | NotFound | ❌ | ❌ |
 
 ---
 
-## 🎣 Custom Hooks
+🎣 Custom Hooks
 
-### useAuth()
+useAuth()
 ```typescript
 const { user, profile, isAdmin, signIn, signUp, signOut } = useAuth();
 ```
 
-### useProducts()
+useProducts()
 ```typescript
 const { data: products, isLoading } = useProducts(category);
 const createProduct = useCreateProduct();
@@ -179,13 +179,13 @@ const updateProduct = useUpdateProduct();
 const deleteProduct = useDeleteProduct();
 ```
 
-### useOrders()
+useOrders()
 ```typescript
 const { data: orders } = useOrders();
 const updateOrderStatus = useUpdateOrderStatus();
 ```
 
-### useImageUpload()
+useImageUpload()
 ```typescript
 const { 
   uploadProductImages,   // (files) => Promise<ImageUploadResult[]>
@@ -196,14 +196,14 @@ const {
 } = useImageUpload();
 ```
 
-### useCart()
+useCart()
 ```typescript
 const { items, addItem, removeItem, updateQuantity, clear } = useCart();
 ```
 
 ---
 
-## 📊 Component Hierarchy
+📊 Component Hierarchy
 
 ```
 App
@@ -225,25 +225,25 @@ App
 
 ---
 
-## 🛠️ Configuration
+🛠️ Configuration
 
-### Environment Variables
+Environment Variables
 ```env
 VITE_SUPABASE_URL=https://xmnggboqigffehnfvuif.supabase.co
 VITE_SUPABASE_PROJECT_ID=xmnggboqigffehnfvuif
 VITE_SUPABASE_PUBLISHABLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ```
 
-### Supabase Project
+Supabase Project
 - Project ID: `xmnggboqigffehnfvuif`
 - URL: `https://xmnggboqigffehnfvuif.supabase.co`
 - Region: (check dashboard)
 
 ---
 
-## 🆕 What Was Added (Dec 18, 2025)
+🆕 What Was Added (Dec 18, 2025)
 
-### Files Created
+Files Created
 ```
 ✅ supabase/migrations/20251218_add_product_management.sql
 ✅ src/hooks/useImageUpload.ts
@@ -253,7 +253,7 @@ VITE_SUPABASE_PUBLISHABLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 ✅ QUICK_REFERENCE.md (this file)
 ```
 
-### Files Updated
+Files Updated
 ```
 ✨ src/pages/Admin.tsx (complete rewrite - table layout)
 ✨ src/lib/types.ts (added discount/stock fields)
@@ -262,9 +262,9 @@ VITE_SUPABASE_PUBLISHABLE_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
 ---
 
-## ⚡ Common Tasks
+⚡ Common Tasks
 
-### Add a New Product
+Add a New Product
 ```typescript
 const createProduct = useCreateProduct();
 await createProduct.mutate({
@@ -280,7 +280,7 @@ await createProduct.mutate({
 });
 ```
 
-### Upload Images
+Upload Images
 ```typescript
 const { uploadProductImages } = useImageUpload();
 const files = [file1, file2];
@@ -288,7 +288,7 @@ const results = await uploadProductImages(files);
 // results = [{ url, path, size }, ...]
 ```
 
-### Check User Role
+Check User Role
 ```typescript
 const { isAdmin } = useAuth();
 if (isAdmin) {
@@ -296,7 +296,7 @@ if (isAdmin) {
 }
 ```
 
-### Apply Discount
+Apply Discount
 ```typescript
 // Database update
 UPDATE products 
@@ -311,27 +311,27 @@ const discount = get_discount_percentage(5000, 4000, '2025-12-25');
 
 ---
 
-## 🐛 Debugging
+🐛 Debugging
 
-### Check if admin user
+Check if admin user
 ```sql
 SELECT id, email, is_admin FROM profiles 
 WHERE email = 'admin@example.com';
 ```
 
-### List uploaded images
+List uploaded images
 ```
 Supabase Dashboard → Storage → product-images
 ```
 
-### Check RLS policies
+Check RLS policies
 ```sql
-SELECT * FROM pg_policies 
+SELECT  FROM pg_policies 
 WHERE tablename = 'objects' 
 AND schemaname = 'storage';
 ```
 
-### Monitor queries
+Monitor queries
 ```typescript
 import { useQueryClient } from '@tanstack/react-query';
 const queryClient = useQueryClient();
@@ -340,27 +340,27 @@ console.log(queryClient.getQueryData(['products']));
 
 ---
 
-## 📈 Performance Tips
+📈 Performance Tips
 
-1. **Images**
+1. Images
    - Use lazy loading: `loading="lazy"`
    - Compress before upload
    - Use WebP format
    - Cache with `cacheControl: '3600'`
 
-2. **Database**
+2. Database
    - Use indexes (already created)
    - Paginate large result sets
    - Use select() to fetch specific columns
 
-3. **State**
+3. State
    - React Query caches data
    - Don't refetch unnecessarily
    - Use dependent queries
 
 ---
 
-## 🚨 Common Issues
+🚨 Common Issues
 
 | Issue | Solution |
 |-------|----------|
@@ -373,7 +373,7 @@ console.log(queryClient.getQueryData(['products']));
 
 ---
 
-## 📚 Documentation Files
+📚 Documentation Files
 
 | File | Purpose |
 |------|---------|
@@ -384,7 +384,7 @@ console.log(queryClient.getQueryData(['products']));
 
 ---
 
-## 🎓 Next Learning Goals
+🎓 Next Learning Goals
 
 - [ ] Add product edit functionality
 - [ ] Implement image cropping
@@ -397,16 +397,16 @@ console.log(queryClient.getQueryData(['products']));
 
 ---
 
-## 📞 Quick Contacts
+📞 Quick Contacts
 
-- **Supabase Docs:** https://supabase.com/docs
-- **React Docs:** https://react.dev
-- **Tailwind Docs:** https://tailwindcss.com/docs
-- **TypeScript Docs:** https://www.typescriptlang.org/docs
+- Supabase Docs: https://supabase.com/docs
+- React Docs: https://react.dev
+- Tailwind Docs: https://tailwindcss.com/docs
+- TypeScript Docs: https://www.typescriptlang.org/docs
 
 ---
 
-## ✅ Deployment Checklist
+✅ Deployment Checklist
 
 Before going live:
 - [ ] Run SQL migration
@@ -422,7 +422,7 @@ Before going live:
 
 ---
 
-**Quick Reference Card**  
+Quick Reference Card  
 Version: 1.0  
 Last Updated: December 18, 2025  
 Status: 🟢 Ready to Use

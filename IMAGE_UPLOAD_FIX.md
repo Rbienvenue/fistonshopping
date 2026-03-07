@@ -1,11 +1,11 @@
-# Product Image Upload Fix - Admin Dashboard
+Product Image Upload Fix - Admin Dashboard
 
-## Issues Found
+Issues Found
 
-### 1. **No Image Upload Implementation** ⚠️
+1. No Image Upload Implementation ⚠️
 The form had a file input for images but the selected files were never processed or uploaded. The code was setting `images: []` regardless of file selection.
 
-### 2. **Broken Placeholder Image** 🖼️
+2. Broken Placeholder Image 🖼️
 When no images were uploaded, the code tried to load from `https://via.placeholder.com/120` which resulted in:
 ```
 GET https://via.placeholder.com/120 net::ERR_NAME_NOT_RESOLVED
@@ -16,37 +16,37 @@ This happens when:
 - No internet connection to that external domain
 - CORS issues or network restrictions
 
-### 3. **No Image Preview** 👁️
+3. No Image Preview 👁️
 Users couldn't see what images they selected before uploading, leading to confusion.
 
-### 4. **No Image Cleanup** 🧹
+4. No Image Cleanup 🧹
 Users couldn't remove accidentally selected images without resetting the entire form.
 
-## Solutions Implemented
+Solutions Implemented
 
-### 1. ✅ Import Image Upload Hook
+1. ✅ Import Image Upload Hook
 ```typescript
 import { useImageUpload } from '@/hooks/useImageUpload';
 ```
 
-### 2. ✅ Initialize Image Upload State
+2. ✅ Initialize Image Upload State
 ```typescript
 const { uploadProductImages, isUploading: isUploadingImages } = useImageUpload();
 const [selectedImageFiles, setSelectedImageFiles] = useState<File[]>([]);
 ```
 
-### 3. ✅ Implement Image File Handling in Form
+3. ✅ Implement Image File Handling in Form
 ```typescript
 <Input
   id="images"
   type="file"
-  accept="image/*"
+  accept="image/"
   multiple
   onChange={(e) => setSelectedImageFiles(Array.from(e.target.files || []))}
 />
 ```
 
-### 4. ✅ Add Image Preview with Removal Option
+4. ✅ Add Image Preview with Removal Option
 ```typescript
 {selectedImageFiles.length > 0 && (
   <div className="mt-3 flex flex-wrap gap-2">
@@ -70,7 +70,7 @@ const [selectedImageFiles, setSelectedImageFiles] = useState<File[]>([]);
 )}
 ```
 
-### 5. ✅ Upload Images Before Creating Product
+5. ✅ Upload Images Before Creating Product
 ```typescript
 // Upload images first if any are selected
 let uploadedImageUrls: string[] = [];
@@ -92,7 +92,7 @@ const productData = {
 };
 ```
 
-### 6. ✅ Replace External Placeholder with Local Fallback
+6. ✅ Replace External Placeholder with Local Fallback
 Instead of relying on external service:
 ```typescript
 // BEFORE (broken):
@@ -115,7 +115,7 @@ src={product.images?.[0] || 'https://via.placeholder.com/120'}
 </div>
 ```
 
-### 7. ✅ Add Loading State for Image Upload
+7. ✅ Add Loading State for Image Upload
 ```typescript
 <Button 
   type="submit"
@@ -132,41 +132,41 @@ src={product.images?.[0] || 'https://via.placeholder.com/120'}
 </Button>
 ```
 
-## How It Works Now
+How It Works Now
 
-### Adding a Product with Images:
+Adding a Product with Images:
 
-1. **Select Images**
+1. Select Images
    - Click file input and select one or more images
    - Preview thumbnails appear with remove buttons (×)
    - Counter shows "N image(s) selected"
 
-2. **Upload Process**
+2. Upload Process
    - Click "Add Product"
    - Button shows "Uploading images..." with spinner
    - Images are uploaded to Supabase Storage (`product-images` bucket)
    - Unique filenames with timestamps prevent conflicts
 
-3. **Create Product**
+3. Create Product
    - After images upload successfully, product record is created
    - Button shows "Creating..." with spinner
    - Image URLs are stored in product's `images` array
 
-4. **Success**
+4. Success
    - Toast notification: "Product created successfully"
    - Form resets, including image selection
    - New product appears in list with image preview
 
-5. **Display with Fallback**
+5. Display with Fallback
    - If product has images: displays first image
    - If product has no images: displays Package icon on muted background
    - Handles image load errors gracefully
 
-## Image Upload Details
+Image Upload Details
 
-**Hook Used**: `useImageUpload` from `src/hooks/useImageUpload.ts`
+Hook Used: `useImageUpload` from `src/hooks/useImageUpload.ts`
 
-**Features**:
+Features:
 - Validates file size (max 5MB by default)
 - Validates file type (JPEG, PNG, WebP)
 - Creates unique filenames with timestamp
@@ -174,12 +174,12 @@ src={product.images?.[0] || 'https://via.placeholder.com/120'}
 - Returns public URLs for each image
 - Shows toast notifications on success/error
 
-**Storage Bucket**: `product-images` (public bucket for displaying product images)
+Storage Bucket: `product-images` (public bucket for displaying product images)
 
-## Files Modified
+Files Modified
 - [src/pages/Admin.tsx](src/pages/Admin.tsx)
 
-## Testing the Fix
+Testing the Fix
 
 1. Go to Admin Dashboard → Products tab
 2. Click "+ Add Product"
@@ -188,7 +188,7 @@ src={product.images?.[0] || 'https://via.placeholder.com/120'}
    - Category
    - Price
    - Stock Quantity
-4. **Select one or more images** ← NEW
+4. Select one or more images ← NEW
 5. See image previews with remove buttons ← NEW
 6. Click "Add Product"
 7. Watch "Uploading images..." progress ← NEW
@@ -196,11 +196,11 @@ src={product.images?.[0] || 'https://via.placeholder.com/120'}
 9. Success toast appears
 10. New product displays in list with actual images ← FIXED (no more placeholder errors)
 
-## Fallback Image
+Fallback Image
 
 Products without images now show:
-- **Icon**: Package icon (from lucide-react)
-- **Background**: Muted background color
-- **No external requests**: Works offline
+- Icon: Package icon (from lucide-react)
+- Background: Muted background color
+- No external requests: Works offline
 
 This prevents the `net::ERR_NAME_NOT_RESOLVED` error completely.

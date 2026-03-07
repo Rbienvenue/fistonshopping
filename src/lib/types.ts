@@ -47,6 +47,7 @@ export interface AdminSettings {
   phone_number: string | null;
   store_name: string | null;
   store_description: string | null;
+  maintenance_mode: boolean;
   created_at: string;
   updated_at: string;
 }

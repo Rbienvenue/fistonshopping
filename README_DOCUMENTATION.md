@@ -1,23 +1,23 @@
-# 📚 Fiston Shop Connect - Complete Documentation Index
+📚 Fiston Shop Connect - Complete Documentation Index
 
 Welcome to the Fiston Shop Connect project! This index will help you navigate all project documentation.
 
 ---
 
-## 🎯 Start Here
+🎯 Start Here
 
-### First Time? Read These:
-1. **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** (5 min read) ⭐
+First Time? Read These:
+1. [QUICK_REFERENCE.md](QUICK_REFERENCE.md) (5 min read) ⭐
    - Quick overview of what's included
    - Common tasks & code snippets
    - Debugging tips
 
-2. **[SETUP_SUMMARY.md](SETUP_SUMMARY.md)** (10 min read)
+2. [SETUP_SUMMARY.md](SETUP_SUMMARY.md) (10 min read)
    - Project architecture
    - What was just added
    - Next steps checklist
 
-3. **[PROJECT_WALKTHROUGH.md](PROJECT_WALKTHROUGH.md)** (30 min read)
+3. [PROJECT_WALKTHROUGH.md](PROJECT_WALKTHROUGH.md) (30 min read)
    - Complete project guide
    - File structure breakdown
    - Feature explanations
@@ -25,57 +25,57 @@ Welcome to the Fiston Shop Connect project! This index will help you navigate al
 
 ---
 
-## 📖 Documentation Map
+📖 Documentation Map
 
-### Core Documentation
+Core Documentation
 
 | Document | Purpose | Time | Level |
 |----------|---------|------|-------|
-| **QUICK_REFERENCE.md** | Quick lookup guide | 5 min | Beginner |
-| **SETUP_SUMMARY.md** | Architecture & setup | 10 min | Intermediate |
-| **PROJECT_WALKTHROUGH.md** | Complete guide | 30 min | Intermediate |
-| **ARCHITECTURE_DIAGRAMS.md** | Visual diagrams | 15 min | Advanced |
-| **IMAGE_UPLOAD_GUIDE.md** | Image handling | 20 min | Intermediate |
-| **README.md** (this) | Documentation index | 5 min | Beginner |
+| QUICK_REFERENCE.md | Quick lookup guide | 5 min | Beginner |
+| SETUP_SUMMARY.md | Architecture & setup | 10 min | Intermediate |
+| PROJECT_WALKTHROUGH.md | Complete guide | 30 min | Intermediate |
+| ARCHITECTURE_DIAGRAMS.md | Visual diagrams | 15 min | Advanced |
+| IMAGE_UPLOAD_GUIDE.md | Image handling | 20 min | Intermediate |
+| README.md (this) | Documentation index | 5 min | Beginner |
 
 ---
 
-## 🔍 Find What You Need
+🔍 Find What You Need
 
-### By Task
+By Task
 
-#### "I want to add a new feature"
+"I want to add a new feature"
 → Read [PROJECT_WALKTHROUGH.md](PROJECT_WALKTHROUGH.md) → Components Section
 
-#### "How do I upload images?"
+"How do I upload images?"
 → Read [IMAGE_UPLOAD_GUIDE.md](IMAGE_UPLOAD_GUIDE.md)
 
-#### "What's the database structure?"
+"What's the database structure?"
 → Read [PROJECT_WALKTHROUGH.md](PROJECT_WALKTHROUGH.md) → Database Schema
 → Or check [ARCHITECTURE_DIAGRAMS.md](ARCHITECTURE_DIAGRAMS.md) → Entity Diagram
 
-#### "I need to understand the admin dashboard"
+"I need to understand the admin dashboard"
 → Read [QUICK_REFERENCE.md](QUICK_REFERENCE.md) → Admin Features
 → Or see [ARCHITECTURE_DIAGRAMS.md](ARCHITECTURE_DIAGRAMS.md) → Admin Dashboard
 
-#### "How do I debug issues?"
+"How do I debug issues?"
 → Read [QUICK_REFERENCE.md](QUICK_REFERENCE.md) → Debugging
 → Or [SETUP_SUMMARY.md](SETUP_SUMMARY.md) → Support
 
-#### "Show me the file structure"
+"Show me the file structure"
 → Read [PROJECT_WALKTHROUGH.md](PROJECT_WALKTHROUGH.md) → Project Structure
 
-#### "What are the routes?"
+"What are the routes?"
 → Read [QUICK_REFERENCE.md](QUICK_REFERENCE.md) → Routes
 → Or [PROJECT_WALKTHROUGH.md](PROJECT_WALKTHROUGH.md) → Routes Section
 
-#### "How do custom hooks work?"
+"How do custom hooks work?"
 → Read [QUICK_REFERENCE.md](QUICK_REFERENCE.md) → Custom Hooks
 → Or [PROJECT_WALKTHROUGH.md](PROJECT_WALKTHROUGH.md) → Hooks
 
 ---
 
-## 🗂️ File Structure
+🗂️ File Structure
 
 ```
 fiston-shop-connect/
@@ -112,21 +112,21 @@ fiston-shop-connect/
 
 ---
 
-## 🎓 Learning Path
+🎓 Learning Path
 
-### Beginner
+Beginner
 1. Read [QUICK_REFERENCE.md](QUICK_REFERENCE.md) (5 min)
 2. Skim [SETUP_SUMMARY.md](SETUP_SUMMARY.md) (10 min)
 3. Try running `npm run dev`
 4. Navigate around the app
 
-### Intermediate
+Intermediate
 1. Read [PROJECT_WALKTHROUGH.md](PROJECT_WALKTHROUGH.md) (30 min)
 2. Study [ARCHITECTURE_DIAGRAMS.md](ARCHITECTURE_DIAGRAMS.md) (15 min)
 3. Read the code in `src/pages/Admin.tsx`
 4. Check `src/hooks/useImageUpload.ts`
 
-### Advanced
+Advanced
 1. Review all SQL migrations
 2. Study RLS policies
 3. Understand database triggers
@@ -135,11 +135,11 @@ fiston-shop-connect/
 
 ---
 
-## 🚀 Quick Start Checklist
+🚀 Quick Start Checklist
 
 - [ ] Read [QUICK_REFERENCE.md](QUICK_REFERENCE.md) (5 min)
 - [ ] Read [SETUP_SUMMARY.md](SETUP_SUMMARY.md) (10 min)
-- [ ] Run SQL migration from `supabase/migrations/20251218_*.sql`
+- [ ] Run SQL migration from `supabase/migrations/20251218_.sql`
 - [ ] Run `npm install` (if not already done)
 - [ ] Run `npm run dev` to start development server
 - [ ] Test image upload on admin dashboard
@@ -147,34 +147,34 @@ fiston-shop-connect/
 
 ---
 
-## 📋 What's Inside
+📋 What's Inside
 
-### Pages (8 Total)
+Pages (8 Total)
 - ✅ Homepage with featured products
 - ✅ Products page with filtering
 - ✅ Product detail page
 - ✅ Shopping cart
 - ✅ Checkout with payment upload
 - ✅ Authentication (signup/login) ✨ Enhanced
-- ✅ **Admin Dashboard** ✨ NEW ENHANCED
+- ✅ Admin Dashboard ✨ NEW ENHANCED
 - ✅ Order success page
 - ✅ 404 error page
 
-### Key Features
+Key Features
 - ✅ User authentication (Supabase Auth)
 - ✅ Shopping cart functionality
 - ✅ Order management
 - ✅ Product catalog with filtering
-- ✅ **Enhanced admin dashboard** (table layout)
-- ✅ **Product stock tracking** (NEW)
-- ✅ **Discount management** (NEW)
-- ✅ **Image upload system** (NEW)
-- ✅ **Storage bucket configuration** (NEW)
+- ✅ Enhanced admin dashboard (table layout)
+- ✅ Product stock tracking (NEW)
+- ✅ Discount management (NEW)
+- ✅ Image upload system (NEW)
+- ✅ Storage bucket configuration (NEW)
 - ✅ Payment proof upload
 - ✅ Dark/Light theme
 - ✅ Responsive design
 
-### Technology Stack
+Technology Stack
 - React 18 + TypeScript
 - Vite (build tool)
 - Tailwind CSS + Shadcn/UI
@@ -184,9 +184,9 @@ fiston-shop-connect/
 
 ---
 
-## 🔄 Recent Updates (Dec 18, 2025)
+🔄 Recent Updates (Dec 18, 2025)
 
-### Added ✨
+Added ✨
 - Enhanced Admin Dashboard with table layout
 - Image upload hook (`useImageUpload`)
 - Product stock tracking
@@ -195,68 +195,68 @@ fiston-shop-connect/
 - Database migrations
 - Comprehensive documentation
 
-### Updated 📝
+Updated 📝
 - Admin page (complete redesign)
 - Product types (added discount fields)
 - App component (React Router v7 flags)
 - Auth page (better UX)
 
-### Fixed 🐛
+Fixed 🐛
 - React Router deprecation warnings (v7 flags)
 - Supabase 400 error on profile update
 - Added show/hide password toggle
 
 ---
 
-## 📞 Documentation Quick Links
+📞 Documentation Quick Links
 
-### By Topic
+By Topic
 
-**Authentication**
+Authentication
 - [QUICK_REFERENCE.md - Admin Features](QUICK_REFERENCE.md#-admin-features)
 - [PROJECT_WALKTHROUGH.md - Auth Flow](PROJECT_WALKTHROUGH.md#-data-flow)
 - [ARCHITECTURE_DIAGRAMS.md - Auth Flow](ARCHITECTURE_DIAGRAMS.md#-authentication--authorization-flow)
 
-**Database**
+Database
 - [PROJECT_WALKTHROUGH.md - Database Schema](PROJECT_WALKTHROUGH.md#-database-schema)
 - [SETUP_SUMMARY.md - Database Structure](SETUP_SUMMARY.md#-database-structure)
 - [ARCHITECTURE_DIAGRAMS.md - Entity Diagram](ARCHITECTURE_DIAGRAMS.md#-system-architecture)
 
-**Images & Storage**
+Images & Storage
 - [IMAGE_UPLOAD_GUIDE.md](IMAGE_UPLOAD_GUIDE.md) (Complete guide)
 - [QUICK_REFERENCE.md - Common Tasks](QUICK_REFERENCE.md#-common-tasks)
 - [PROJECT_WALKTHROUGH.md - Storage Buckets](PROJECT_WALKTHROUGH.md#storage-buckets)
 
-**Admin Dashboard**
+Admin Dashboard
 - [QUICK_REFERENCE.md - Admin Features](QUICK_REFERENCE.md#-admin-features)
 - [ARCHITECTURE_DIAGRAMS.md - Admin Flow](ARCHITECTURE_DIAGRAMS.md#-complete-data-flow-for-adding-a-product)
 
-**Hooks & State**
+Hooks & State
 - [QUICK_REFERENCE.md - Custom Hooks](QUICK_REFERENCE.md#-custom-hooks)
 - [PROJECT_WALKTHROUGH.md - Hooks](PROJECT_WALKTHROUGH.md#/src/hooks)
 
 ---
 
-## 🛠️ Common Commands
+🛠️ Common Commands
 
 ```bash
-# Development
+Development
 npm run dev           # Start dev server
 npm run build         # Build for production
 npm run preview       # Preview build
 
-# Code Quality
+Code Quality
 npm run lint          # Check code style
 
-# Database
+Database
 supabase migration up # Apply migrations
 ```
 
 ---
 
-## 🚨 Troubleshooting
+🚨 Troubleshooting
 
-**Need help?**
+Need help?
 1. Check [QUICK_REFERENCE.md - Common Issues](QUICK_REFERENCE.md#-common-issues)
 2. Review [IMAGE_UPLOAD_GUIDE.md - Troubleshooting](IMAGE_UPLOAD_GUIDE.md#-troubleshooting)
 3. Check browser console for errors
@@ -264,20 +264,20 @@ supabase migration up # Apply migrations
 
 ---
 
-## 📊 Project Stats
+📊 Project Stats
 
-- **Pages:** 8
-- **Components:** 40+
-- **Hooks:** 6
-- **Tables:** 5
-- **Storage Buckets:** 2
-- **Routes:** 8
-- **Lines of Code:** 5000+
-- **Documentation Pages:** 6
+- Pages: 8
+- Components: 40+
+- Hooks: 6
+- Tables: 5
+- Storage Buckets: 2
+- Routes: 8
+- Lines of Code: 5000+
+- Documentation Pages: 6
 
 ---
 
-## ✅ Deployment Checklist
+✅ Deployment Checklist
 
 Before deploying to production:
 1. [ ] Run database migration
@@ -293,30 +293,30 @@ See [QUICK_REFERENCE.md - Deployment Checklist](QUICK_REFERENCE.md#-deployment-c
 
 ---
 
-## 🎯 Next Steps
+🎯 Next Steps
 
-1. **Read Documentation** (Pick based on your role)
+1. Read Documentation (Pick based on your role)
    - Frontend Dev → [PROJECT_WALKTHROUGH.md](PROJECT_WALKTHROUGH.md)
    - Backend Dev → [ARCHITECTURE_DIAGRAMS.md](ARCHITECTURE_DIAGRAMS.md)
    - DevOps → [SETUP_SUMMARY.md](SETUP_SUMMARY.md)
 
-2. **Run Database Migration**
+2. Run Database Migration
    - File: `supabase/migrations/20251218_add_product_management.sql`
    - Execute in Supabase Dashboard → SQL Editor
 
-3. **Test Features**
+3. Test Features
    - Login
    - Image upload
    - Product creation
    - Order management
 
-4. **Deploy**
+4. Deploy
    - Follow deployment checklist
    - Monitor production
 
 ---
 
-## 📚 Related Resources
+📚 Related Resources
 
 - [React Documentation](https://react.dev)
 - [Supabase Documentation](https://supabase.com/docs)
@@ -326,32 +326,32 @@ See [QUICK_REFERENCE.md - Deployment Checklist](QUICK_REFERENCE.md#-deployment-c
 
 ---
 
-## 👥 Project Team
+👥 Project Team
 
 This project is maintained by the Fiston Shop Kigali team.
 
 ---
 
-## 📄 License
+📄 License
 
 Project created December 2025
 
 ---
 
-## 📍 Documentation Navigation
+📍 Documentation Navigation
 
 | Document | Purpose | Audience |
 |----------|---------|----------|
-| **README.md** | This file (index) | Everyone |
-| **QUICK_REFERENCE.md** | Quick lookup | Everyone |
-| **SETUP_SUMMARY.md** | Architecture & setup | Developers |
-| **PROJECT_WALKTHROUGH.md** | Complete guide | Developers |
-| **ARCHITECTURE_DIAGRAMS.md** | Technical diagrams | Technical leads |
-| **IMAGE_UPLOAD_GUIDE.md** | Image implementation | Frontend devs |
+| README.md | This file (index) | Everyone |
+| QUICK_REFERENCE.md | Quick lookup | Everyone |
+| SETUP_SUMMARY.md | Architecture & setup | Developers |
+| PROJECT_WALKTHROUGH.md | Complete guide | Developers |
+| ARCHITECTURE_DIAGRAMS.md | Technical diagrams | Technical leads |
+| IMAGE_UPLOAD_GUIDE.md | Image implementation | Frontend devs |
 
 ---
 
-## 🎓 Documentation Quality Metrics
+🎓 Documentation Quality Metrics
 
 - ✅ 6 comprehensive documentation files
 - ✅ 100+ code examples
@@ -363,7 +363,7 @@ Project created December 2025
 
 ---
 
-## 📞 Support & Updates
+📞 Support & Updates
 
 For updates to this documentation:
 1. Check the "Last Updated" date in each file
@@ -372,20 +372,20 @@ For updates to this documentation:
 
 ---
 
-**Documentation Hub**  
+Documentation Hub  
 Last Updated: December 18, 2025  
 Status: ✅ Complete & Ready
 
 ---
 
-### 🚀 Ready to Start?
+🚀 Ready to Start?
 
 Pick a guide based on what you need:
 
-- **Quick lookup?** → [QUICK_REFERENCE.md](QUICK_REFERENCE.md)
-- **Learning project?** → [PROJECT_WALKTHROUGH.md](PROJECT_WALKTHROUGH.md)
-- **Understanding architecture?** → [ARCHITECTURE_DIAGRAMS.md](ARCHITECTURE_DIAGRAMS.md)
-- **Setting up images?** → [IMAGE_UPLOAD_GUIDE.md](IMAGE_UPLOAD_GUIDE.md)
-- **Getting started?** → [SETUP_SUMMARY.md](SETUP_SUMMARY.md)
+- Quick lookup? → [QUICK_REFERENCE.md](QUICK_REFERENCE.md)
+- Learning project? → [PROJECT_WALKTHROUGH.md](PROJECT_WALKTHROUGH.md)
+- Understanding architecture? → [ARCHITECTURE_DIAGRAMS.md](ARCHITECTURE_DIAGRAMS.md)
+- Setting up images? → [IMAGE_UPLOAD_GUIDE.md](IMAGE_UPLOAD_GUIDE.md)
+- Getting started? → [SETUP_SUMMARY.md](SETUP_SUMMARY.md)
 
 Good luck! 🎉

@@ -4,7 +4,9 @@ import { motion } from 'framer-motion';
 import { useAuth } from '@/contexts/AuthContext';
 import { useOrders, useUpdateOrderStatus, useDeleteOrder } from '@/hooks/useOrders';
 import { useProducts, useDeleteProduct, useCreateProduct, useUpdateProduct } from '@/hooks/useProducts';
+import { useAdminSettings, useUpdateAdminSettings } from '@/hooks/useAdminSettings';
 import { useImageUpload } from '@/hooks/useImageUpload';
+import { Switch } from '@/components/ui/switch';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -54,6 +56,8 @@ const Admin = () => {
   const createProduct = useCreateProduct();
   const updateProduct = useUpdateProduct();
   const { uploadProductImages, isUploading: isUploadingImages } = useImageUpload();
+  const { data: adminSettings } = useAdminSettings();
+  const updateAdminSettings = useUpdateAdminSettings();
   
   const [selectedImageFiles, setSelectedImageFiles] = useState<File[]>([]);
   
@@ -236,6 +240,28 @@ const Admin = () => {
             <p className="text-muted-foreground">Manage orders, products, and inventory</p>
           </div>
           <Button variant="outline" onClick={signOut}><LogOut className="w-4 h-4 mr-2" /> Sign Out</Button>
+        </div>
+
+        {/* Maintenance Mode Toggle */}
+        <div className="card-elevated p-4 mb-6 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <AlertTriangle className={`w-5 h-5 ${adminSettings?.maintenance_mode ? 'text-red-500' : 'text-muted-foreground'}`} />
+            <div>
+              <p className="font-semibold">Maintenance Mode</p>
+              <p className="text-sm text-muted-foreground">
+                {adminSettings?.maintenance_mode
+                  ? 'Site is offline — only admins can access the dashboard'
+                  : 'Site is live and accessible to all users'}
+              </p>
+            </div>
+          </div>
+          <Switch
+            checked={adminSettings?.maintenance_mode ?? false}
+            onCheckedChange={(checked) => {
+              updateAdminSettings.mutate({ maintenance_mode: checked });
+            }}
+            disabled={updateAdminSettings.isPending}
+          />
         </div>
 
         <Tabs defaultValue="orders">
