@@ -17,10 +17,7 @@ const ChatContent = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Only initialize useChat when we have a userId
-  const { messages = [], isLoading = false, error = null, sendMessage } = user?.id 
-    ? useChat(user.id) 
-    : { messages: [], isLoading: false, error: null, sendMessage: async () => ({ error: 'Not authenticated' }) };
+  const { messages = [], isLoading = false, error = null, sendMessage } = useChat(user?.id);
 
   // Redirect if not authenticated
   useEffect(() => {
