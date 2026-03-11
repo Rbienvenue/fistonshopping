@@ -17,7 +17,6 @@ import Chat from "./pages/Chat";
 import OrderSuccess from "./pages/OrderSuccess";
 import OrderTrack from "./pages/OrderTrack";
 import Profile from "./pages/Profile";
-import ServerError from "./pages/ServerError";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
