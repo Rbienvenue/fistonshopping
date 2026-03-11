@@ -23,7 +23,7 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 // Set to false to restore normal routing
-const SERVER_MAINTENANCE = true;
+const SERVER_MAINTENANCE = false;
 
 const App = () => (
   <HelmetProvider>
