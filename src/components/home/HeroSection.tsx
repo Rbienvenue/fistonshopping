@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 
 const HeroSection = () => {
   return (
-    <section className="relative overflow-hidden gradient-hero min-h-[600px] lg:min-h-[700px] flex items-center">
+    <section className="relative overflow-hidden bg-gray-500 min-h-[600px] lg:min-h-[700px] flex items-center">
       {/* Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl" />
@@ -76,7 +76,7 @@ const HeroSection = () => {
                 <Button
                   variant="outline"
                   size="lg"
-                  className="px-8 py-6 text-lg border-secondary-foreground/30 text-secondary-foreground hover:bg-secondary-foreground/10"
+                  className="px-8 py-6 text-lg border-secondary-foreground/30  hover:bg-secondary-foreground/10"
                 >
                   View Catalog
                 </Button>

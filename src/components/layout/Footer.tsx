@@ -121,24 +121,7 @@ const Footer = () => {
           </motion.div>
         </div>
 
-        <div className="border-t border-secondary-foreground/10 mt-8 pt-8 text-center">
-          <p className="text-sm text-secondary-foreground/60">
-            © {new Date().getFullYear()} Fiston Shop Kigali. All rights
-            reserved.
-          </p>
-          <p>
-            Developed by
-            <a
-              href="https://wa.me/250791811736"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary hover:underline"
-            >
-              {" "}
-              Gervais Iradukunda
-            </a>
-          </p>
-        </div>
+        
       </div>
     </footer>
   );
